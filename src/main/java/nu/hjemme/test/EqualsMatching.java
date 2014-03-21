@@ -12,8 +12,10 @@ public class EqualsMatching extends MatchBuilder {
     private final Object base;
 
     public EqualsMatching(Object base) {
+        super("Implementasjon av equals(...) ihht. java spesifikasjon");
         this.base = base;
         matches(base, is(equalTo(base)), "base skal vere lik seg selv"); // dette slar aldri feil, men er med for coverage
+        matches(base, is(not(equalTo((Object) new OtherType()))), "base skal være ulik en annen type"); // Vil sannsynligvis aldri slå feil, men....
     }
 
     public EqualsMatching isEqualTo(Object equal) {
@@ -26,7 +28,6 @@ public class EqualsMatching extends MatchBuilder {
     public EqualsMatching isNotEqualTo(Object notEqual) {
         matches(base, is(not(equalTo(notEqual))), "base skal ikke vaere lik notEqual");
         matches(base, is(not(sameInstance(notEqual))), MINNEADRESSE);
-        matches(base, is(not(equalTo((Object) new OtherType()))), "base skal være ulik en annen type");
 
         return this;
     }

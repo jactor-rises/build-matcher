@@ -13,6 +13,7 @@ public class HashCodeMatching extends MatchBuilder {
     private final Object base;
 
     public HashCodeMatching(Object base) {
+        super("Inplementasjon av hashCode() ihht. java spesifikasjon");
         this.base = base;
         matches(base.hashCode(), is(not(equalTo(0))), HASH_CODE_ER_TALLET_NULL);
         matches(base.hashCode(), is(allOf(equalTo(base.hashCode()), equalTo(base.hashCode()))), HASH_CODE_RANDOM_NUMBER);
