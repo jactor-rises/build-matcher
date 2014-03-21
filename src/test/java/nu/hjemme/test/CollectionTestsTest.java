@@ -24,25 +24,6 @@ public class CollectionTestsTest {
         CollectionTests.assertThatHashCodeIsImplementedCorrect(base, equalToBase, notEqualToBaseEqual);
     }
 
-    @Test
-    public void willHaveEqualsImplementedCorrect() {
-        BeanWithHashCodeAndEquals base = new BeanWithHashCodeAndEquals();
-        BeanWithHashCodeAndEquals equalToBase = new BeanWithHashCodeAndEquals();
-        BeanWithHashCodeAndEquals notEqualToBase = new BeanWithHashCodeAndEquals();
-        notEqualToBase.property = true;
-
-        CollectionTests.assertThatEqualsIsImplementedCorrect(base, equalToBase, notEqualToBase);
-    }
-
-    @Test(expected = AssertionError.class)
-    public void skalIkkeHaEqualsImplementertRiktigNarObjektSomSkalVaereUliktErLikt() {
-        BeanWithHashCodeAndEquals base = new BeanWithHashCodeAndEquals();
-        BeanWithHashCodeAndEquals equalToBase = new BeanWithHashCodeAndEquals();
-        BeanWithHashCodeAndEquals notEqualToBaseEqual = new BeanWithHashCodeAndEquals();
-
-        CollectionTests.assertThatEqualsIsImplementedCorrect(base, equalToBase, notEqualToBaseEqual);
-    }
-
     private class BeanWithHashCodeAndEquals {
         boolean property = false;
 
