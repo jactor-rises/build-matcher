@@ -18,6 +18,10 @@ public class MatchBuilder {
         mismatchDescriptions = new StringBuilder("\nExpected \"" + expectedValue + "\", but there was failures:");
     }
 
+    /**
+     * NOTE! In case of a mismatch with discription, then this method will throw an {@link java.lang.AssertionError} with this descriptions.
+     * @return <code>true</code> if match
+     */
     public boolean isMatch() {
         if (mismatch && mismatchDescriptions != null) {
             throw new AssertionError(mismatchDescriptions.toString());

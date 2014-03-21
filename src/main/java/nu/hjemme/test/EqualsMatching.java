@@ -13,10 +13,10 @@ public class EqualsMatching extends MatchBuilder {
 
     public EqualsMatching(Object base) {
         this.base = base;
+        matches(base, is(equalTo(base)), "base skal vere lik seg selv"); // dette slar aldri feil, men er med for coverage
     }
 
     public EqualsMatching isEqualTo(Object equal) {
-        matches(base, is(equalTo(base)), "base skal vere lik seg selv"); // dette slar aldri feil, men er med for coverage
         matches(base, is(equalTo(equal)), "base skal vere lik equal");
         matches(base, is(not(sameInstance(equal))), MINNEADRESSE);
 
