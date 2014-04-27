@@ -7,16 +7,16 @@ import static org.hamcrest.CoreMatchers.not;
 
 /** @author Tor Egil Jacobsen */
 public class HashCodeMatching extends MatchBuilder {
-    static final String HASH_CODE_ER_TALLET_NULL = "hash code skal ikke vaere 0";
-    static final String HASH_CODE_RANDOM_NUMBER = "hash code skal vare lik for hvert kall";
+    static final String HASH_CODE_SKAL_IKKE_VAERE_TALLET_NULL = "hash code skal ikke være 0";
+    static final String HASH_CODE_HASH_CODE_SKAL_VAERE_LIK_FOR_HVERT_KALL = "hash code skal vøre lik for hvert kall";
 
     private final Object base;
 
     public HashCodeMatching(Object base) {
         super("Inplementasjon av hashCode() ihht. java spesifikasjon");
         this.base = base;
-        matches(base.hashCode(), is(not(equalTo(0))), HASH_CODE_ER_TALLET_NULL);
-        matches(base.hashCode(), is(allOf(equalTo(base.hashCode()), equalTo(base.hashCode()))), HASH_CODE_RANDOM_NUMBER);
+        matches(base.hashCode(), is(not(equalTo(0))), HASH_CODE_SKAL_IKKE_VAERE_TALLET_NULL);
+        matches(base.hashCode(), is(allOf(equalTo(base.hashCode()), equalTo(base.hashCode()))), HASH_CODE_HASH_CODE_SKAL_VAERE_LIK_FOR_HVERT_KALL);
     }
 
     public HashCodeMatching isImplementedForEquality(Object equal) {

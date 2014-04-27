@@ -20,10 +20,10 @@ public class HashCodeMatchingTest {
 
             fail("forventet feil da bonne skal gi tallet null som hashCode");
         } catch (AssertionError ae) {
-            assertThat(ae.getMessage(), new SubstringMatcher(HashCodeMatching.HASH_CODE_ER_TALLET_NULL) {
+            assertThat(ae.getMessage(), new SubstringMatcher(HashCodeMatching.HASH_CODE_SKAL_IKKE_VAERE_TALLET_NULL) {
                 @Override
                 protected boolean evalSubstringOf(String string) {
-                    return string.contains(HashCodeMatching.HASH_CODE_ER_TALLET_NULL);
+                    return string.contains(HashCodeMatching.HASH_CODE_SKAL_IKKE_VAERE_TALLET_NULL);
                 }
 
                 @Override
@@ -41,10 +41,10 @@ public class HashCodeMatchingTest {
 
             fail("forventet feil da bonne skal gi forskjellig tall ved kall til hashCode");
         } catch (AssertionError ae) {
-            assertThat(ae.getMessage(), new SubstringMatcher(HashCodeMatching.HASH_CODE_RANDOM_NUMBER) {
+            assertThat(ae.getMessage(), new SubstringMatcher(HashCodeMatching.HASH_CODE_HASH_CODE_SKAL_VAERE_LIK_FOR_HVERT_KALL) {
                 @Override
                 protected boolean evalSubstringOf(String string) {
-                    return string.contains(HashCodeMatching.HASH_CODE_ER_TALLET_NULL);
+                    return string.contains(HashCodeMatching.HASH_CODE_SKAL_IKKE_VAERE_TALLET_NULL);
                 }
 
                 @Override
@@ -117,7 +117,7 @@ public class HashCodeMatchingTest {
                 case ZERO:
                     return 0;
                 case RANDOM:
-                    return (int) Math.random();
+                    return (int) (Math.random() * 100000000);
                 default:
                     throw new UnsupportedOperationException("type (" + hashCodeType + ") er ikke støttet!");
             }
