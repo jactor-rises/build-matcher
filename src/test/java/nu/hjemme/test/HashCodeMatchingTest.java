@@ -44,7 +44,7 @@ public class HashCodeMatchingTest {
             assertThat(ae.getMessage(), new SubstringMatcher(HashCodeMatching.HASH_CODE_HASH_CODE_SKAL_VAERE_LIK_FOR_HVERT_KALL) {
                 @Override
                 protected boolean evalSubstringOf(String string) {
-                    return string.contains(HashCodeMatching.HASH_CODE_SKAL_IKKE_VAERE_TALLET_NULL);
+                    return string.contains(HashCodeMatching.HASH_CODE_HASH_CODE_SKAL_VAERE_LIK_FOR_HVERT_KALL);
                 }
 
                 @Override
