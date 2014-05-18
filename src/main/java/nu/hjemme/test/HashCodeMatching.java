@@ -4,31 +4,37 @@ import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.sameInstance;
 
 /** @author Tor Egil Jacobsen */
 public class HashCodeMatching extends MatchBuilder {
-    static final String HASH_CODE_SKAL_IKKE_VAERE_TALLET_NULL = "hash code skal ikke være 0";
-    static final String HASH_CODE_HASH_CODE_SKAL_VAERE_LIK_FOR_HVERT_KALL = "hash code skal vøre lik for hvert kall";
+    static final String EQUAL_FOR_CONSECUTIVE_CALLS = "The hash code should be equal for consecutive calls";
+    static final String EQUAL_BEANS_UNEQUAL_HASH_CODE = "Two equal objects must have equal hash code";
+    static final String UNEQUAL_OBJECTS_EQUAL_HASH_CODE = "Two unequal objects should not have the same " +
+            "hash code. Note: this is not an requirement, but a recommendation.";
 
     private final Object base;
 
     public HashCodeMatching(Object base) {
-        super("Inplementasjon av hashCode() ihht. java spesifikasjon");
+        super("Implementation of hashCode() according to the java specification");
         this.base = base;
-        matches(base.hashCode(), is(not(equalTo(0))), HASH_CODE_SKAL_IKKE_VAERE_TALLET_NULL);
-        matches(base.hashCode(), is(allOf(equalTo(base.hashCode()), equalTo(base.hashCode()))), HASH_CODE_HASH_CODE_SKAL_VAERE_LIK_FOR_HVERT_KALL);
+
+        matches(base.hashCode(), is(allOf(equalTo(base.hashCode()), equalTo(base.hashCode()))),
+                EQUAL_FOR_CONSECUTIVE_CALLS
+        );
     }
 
-    public HashCodeMatching isImplementedForEquality(Object equal) {
-        matches(base, is(equalTo(equal)), "base og equal ma vere like");
-        matches(base.hashCode(), is(equalTo(equal.hashCode())), "base skal ha hashcode lik equal");
+    public HashCodeMatching hasImplementionForEquality(Object equal) {
+        matches(base, is(equalTo(equal)), "The two objects must be equal");
+        matches(base, is(not(sameInstance(equal))), "The objects beeing tested should not be the same instance");
+        matches(base.hashCode(), is(equalTo(equal.hashCode())), EQUAL_BEANS_UNEQUAL_HASH_CODE);
 
         return this;
     }
 
-    public HashCodeMatching isUniqueImplementation(Object notEqual) {
-        matches(base, is(not(equalTo(notEqual))), "base og notEqual kan ikke vere like");
-        matches(base.hashCode(), is(not(equalTo(notEqual.hashCode()))), "base skal ikke ha hashcode lik notEqual");
+    public HashCodeMatching hasImplementationForUniqeness(Object another) {
+        matches(base, is(not(another)), "The two objects can not be equal");
+        matches(base.hashCode(), is(not(equalTo(another.hashCode()))), UNEQUAL_OBJECTS_EQUAL_HASH_CODE);
 
         return this;
     }

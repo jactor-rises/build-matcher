@@ -1,19 +1,26 @@
 package nu.hjemme.test;
 
-import org.hamcrest.core.SubstringMatcher;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /**
  * @author Tor Egil Jacobsen
  */
 public class EqualsMatchingTest {
     private EqualsMatching testEqualsMatching;
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
+    @Before
+    public void before() {
+        expectedException.handleAssertionErrors();
+    }
 
     @Before
     public void initForTesting() throws Exception {
@@ -42,25 +49,10 @@ public class EqualsMatchingTest {
 
     @Test
     public void skalSjekkeAtLikeObjektHarUlikMinnereferanse() {
+        expectedException.expectMessage(EqualsMatching.NOT_SAME_INSTANCE);
         Bean equalBean = new Bean(true);
 
-        try {
-            new EqualsMatching(equalBean).isEqualTo(equalBean).isMatch();
-
-            fail("forventet feil da bonner har lik minneadresse");
-        } catch (AssertionError ae) {
-            assertThat(ae.getMessage(), new SubstringMatcher(EqualsMatching.MINNEADRESSE) {
-                @Override
-                protected boolean evalSubstringOf(String string) {
-                    return string.contains(EqualsMatching.MINNEADRESSE);
-                }
-
-                @Override
-                protected String relationship() {
-                    return "feilmelding til EqualMatching";
-                }
-            });
-        }
+        new EqualsMatching(equalBean).isEqualTo(equalBean).isMatch();
     }
 
     private static class Bean {

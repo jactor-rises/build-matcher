@@ -1,66 +1,40 @@
 package nu.hjemme.test;
 
-import org.hamcrest.core.SubstringMatcher;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 /**
  * @author Tor Egil Jacobsen
  */
 public class HashCodeMatchingTest {
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
-    @Test
-    public void skalSjekkeAtHashCodeIkkeErTalletNull() {
-        try {
-            new HashCodeMatching(new Bean(HashCodeType.ZERO)).isMatch();
-
-            fail("forventet feil da bonne skal gi tallet null som hashCode");
-        } catch (AssertionError ae) {
-            assertThat(ae.getMessage(), new SubstringMatcher(HashCodeMatching.HASH_CODE_SKAL_IKKE_VAERE_TALLET_NULL) {
-                @Override
-                protected boolean evalSubstringOf(String string) {
-                    return string.contains(HashCodeMatching.HASH_CODE_SKAL_IKKE_VAERE_TALLET_NULL);
-                }
-
-                @Override
-                protected String relationship() {
-                    return "feilmelding til HashCodeMatching";
-                }
-            });
-        }
+    @Before
+    public void before() {
+        expectedException.handleAssertionErrors();
     }
 
     @Test
     public void skalSjekkeAtHashCodeGirSammeTallVedHvertKall() {
-        try {
-            new HashCodeMatching(new Bean(HashCodeType.RANDOM)).isMatch();
+        expectedException.expectMessage(HashCodeMatching.EQUAL_FOR_CONSECUTIVE_CALLS);
 
-            fail("forventet feil da bonne skal gi forskjellig tall ved kall til hashCode");
-        } catch (AssertionError ae) {
-            assertThat(ae.getMessage(), new SubstringMatcher(HashCodeMatching.HASH_CODE_HASH_CODE_SKAL_VAERE_LIK_FOR_HVERT_KALL) {
-                @Override
-                protected boolean evalSubstringOf(String string) {
-                    return string.contains(HashCodeMatching.HASH_CODE_HASH_CODE_SKAL_VAERE_LIK_FOR_HVERT_KALL);
-                }
-
-                @Override
-                protected String relationship() {
-                    return "feilmelding til HashCodeMatching";
-                }
-            });
-        }
+        new HashCodeMatching(new Bean(HashCodeType.RANDOM)).isMatch();
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void skalFeileNarHashCodeErForskjelligPaBonnerSomSkalVereLike() {
+        expectedException.expectMessage(HashCodeMatching.EQUAL_BEANS_UNEQUAL_HASH_CODE);
+
         Bean base = new Bean(true);
         Bean notEqual = new Bean(false);
 
-        assertFalse(new HashCodeMatching(base).isImplementedForEquality(notEqual).isMatch());
+        assertFalse(new HashCodeMatching(base).hasImplementionForEquality(notEqual).isMatch());
     }
 
     @Test
@@ -68,15 +42,17 @@ public class HashCodeMatchingTest {
         Bean base = new Bean(true);
         Bean equal = new Bean(true);
 
-        assertTrue(new HashCodeMatching(base).isImplementedForEquality(equal).isMatch());
+        assertTrue(new HashCodeMatching(base).hasImplementionForEquality(equal).isMatch());
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void skalFeileNarHashCodeErLikPaBonnerSomSkalVereUlike() {
+        expectedException.expectMessage(HashCodeMatching.UNEQUAL_OBJECTS_EQUAL_HASH_CODE);
+
         Bean base = new Bean(true);
         Bean equal = new Bean(true);
 
-        assertFalse(new HashCodeMatching(base).isUniqueImplementation(equal).isMatch());
+        assertFalse(new HashCodeMatching(base).hasImplementationForUniqeness(equal).isMatch());
     }
 
     @Test
@@ -84,7 +60,7 @@ public class HashCodeMatchingTest {
         Bean base = new Bean(true);
         Bean notEqual = new Bean(false);
 
-        assertTrue(new HashCodeMatching(base).isUniqueImplementation(notEqual).isMatch());
+        assertTrue(new HashCodeMatching(base).hasImplementationForUniqeness(notEqual).isMatch());
     }
 
     private static class Bean {
@@ -114,8 +90,6 @@ public class HashCodeMatchingTest {
             switch (hashCodeType) {
                 case NORMAL:
                     return (booleanProperty ? 1 : 2);
-                case ZERO:
-                    return 0;
                 case RANDOM:
                     return (int) (Math.random() * 100000000);
                 default:
@@ -125,6 +99,6 @@ public class HashCodeMatchingTest {
     }
 
     private static enum HashCodeType {
-        ZERO, RANDOM, NORMAL
+        RANDOM, NORMAL
     }
 }
