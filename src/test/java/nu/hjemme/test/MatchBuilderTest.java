@@ -3,74 +3,72 @@ package nu.hjemme.test;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.util.List;
 
 import static java.util.Collections.emptyList;
 import static nu.hjemme.test.MatchBuilder.provideExpectedVsRealValue;
-import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.core.AnyOf.anyOf;
-import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.mockito.Matchers.argThat;
+import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class MatchBuilderTest {
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Test
     public void skalMatcheDersomHamcrestMatchereGirEnMatch() {
         Object obj = new Object();
 
         assertTrue(new MatchBuilder("Object er ikke likt en annen instans av Object")
-                .matches(obj, is(not(equalTo(new Object()))), "En instans av java.lang.Object skal ikke vare lik en annen instans")
-                .isMatch()
+                        .matches(obj, is(not(equalTo(new Object()))), "En instans av java.lang.Object skal ikke vare lik en annen instans")
+                        .isMatch()
         );
     }
 
     @Test
     public void skalKunneLeggeTilFeilmeldingerForHverEnkelSjekk() {
-        try {
-            Object obj = new Object();
+        expectedException.expect(AssertionError.class);
+        expectedException.handleAssertionErrors();
+        expectedException.expectMessage("hashcode");
+        expectedException.expectMessage("likhet");
+        expectedException.expectMessage("toString()");
 
-            assertTrue(new MatchBuilder("Alle feilmeldinger til konsoll")
-                    .matches(obj.hashCode(), is(equalTo(0)), "hashcode skal vare 0")
-                    .matches(obj, is(equalTo(new Object())), "objekt skal vare likt et annet objekt")
-                    .matches(obj.toString().equals("mitt objekt"), "toString() skal vare implementert")
-                    .isMatch()
-            );
+        Object obj = new Object();
 
-            fail("Forventet feil i assert");
-        } catch (AssertionError assertionError) {
-            assertThat("Feilbeskrivelser i feilmelding", assertionError.getMessage(), allOf(
-                    containsString("hashcode skal vare 0"),
-                    containsString("objekt skal vare likt et annet objekt"),
-                    containsString("toString() skal vare implementert")
-            ));
-        }
+        assertTrue(new MatchBuilder("Alle feilmeldinger til konsoll")
+                        .matches(obj.hashCode(), is(equalTo(0)), "hashcode")
+                        .matches(obj, is(equalTo(new Object())), "likhet")
+                        .matches(obj.toString().equals("mitt objekt"), "toString()")
+                        .isMatch()
+        );
     }
 
     @Test
     public void skalKunneAvslutteMatchBuilderUtenException() {
-        try {
-            Object obj = new Object();
+        expectedException.expect(AssertionError.class);
+        expectedException.handleAssertionErrors();
+        expectedException.expectMessage("avoid NullpointerException");
+        expectedException.expectMessage(not(contains("skal ikke skje")));
 
-            assertTrue(new MatchBuilder("NullPointer exception skal ikke komme")
-                    .failIfMatch(obj, obj, "null pointer skal ikke skje")
-                    .matches(throwNullPointerException(), "skal ikke skje")
-                    .isMatch()
-            );
+        Object obj = new Object();
 
-            fail("Forventet feil i assert");
-        } catch (AssertionError assertionError) {
-            assertThat("Feilbeskrivelser i feilmelding", assertionError.getMessage(), containsString("null pointer skal ikke skje"));
-        }
+        assertTrue(new MatchBuilder("NullPointer exception skal ikke komme")
+                        .failIfMatch(obj, obj, "avoid NullpointerException")
+                        .matches(throwNullPointerException(), "skal ikke skje")
+                        .isMatch()
+        );
     }
 
     private boolean throwNullPointerException() {
@@ -79,41 +77,39 @@ public class MatchBuilderTest {
 
     @Test
     public void skalKunneSeToStringPaaObjektreferanserSomSjekkesForLikhet() {
-        try {
-            Object obj = new Object();
+        expectedException.expect(AssertionError.class);
+        expectedException.handleAssertionErrors();
+        expectedException.expectMessage(" [expected: ");
+        expectedException.expectMessage("| real: ");
 
-            assertTrue(new MatchBuilder("Skal kunne se toString nar likhet sjekkes")
-                    .matches(obj, is(equalTo(new Object())), "real vs. expected")
-                    .isMatch()
-            );
+        Object obj = new Object();
 
-            fail("Forventet feil i assert");
-        } catch (AssertionError assertionError) {
-            assertThat("Feilbeskrivelser i feilmelding", assertionError.getMessage(), allOf(
-                    containsString(" [expected: "),
-                    containsString("| real: ")
-            ));
-        }
+        assertTrue(new MatchBuilder("Skal kunne se toString nar likhet sjekkes")
+                        .matches(obj, is(equalTo(new Object())), "real vs. expected")
+                        .isMatch()
+        );
     }
 
     @Test
     public void skalKunneBrukeMatchersForAsserter() {
-        try {
-            Object obj = new Object();
+        expectedException.expect(AssertionError.class);
+        expectedException.handleAssertionErrors();
+        expectedException.expectMessage("expected: (<101> or <0>)");
 
-            assertTrue(new MatchBuilder("Bruk av org.hamcrest.Matchers")
-                    .matches(obj.hashCode(), anyOf(equalTo(101), equalTo(0)), "uventet hashcode")
-                    .isMatch()
-            );
+        Object obj = new Object();
 
-            fail("Forventet feil i assert");
-        } catch (AssertionError assertionError) {
-            assertThat("Feilbeskrivelse i feilmelding", assertionError.getMessage(), containsString("expected: (<101> or <0>)"));
-        }
+        assertTrue(new MatchBuilder("Bruk av org.hamcrest.Matchers")
+                        .matches(obj.hashCode(), anyOf(equalTo(101), equalTo(0)), "uventet hashcode")
+                        .isMatch()
+        );
     }
 
-    @Test(expected = AssertionError.class)
-    public void skalFeileMedMatchOgBrukAvHamcrestMatchers() {
+    @Test
+    public void skalFeileUmiddelbartMedMatchOgBrukAvHamcrestMatchers() {
+        expectedException.expect(AssertionError.class);
+        expectedException.handleAssertionErrors();
+        expectedException.expectMessage("Objektene skal vare like (objektene er samme instans og feiler derfor)");
+
         Object object = new Object();
         new MatchBuilder().failIfMatch(object, is(equalTo(object)), "Objektene skal vare like (objektene er samme instans og feiler derfor)");
     }
@@ -124,7 +120,7 @@ public class MatchBuilderTest {
     }
 
     @Test
-    public void skalIkkeFeileNarArgumentSjekkesMedMockitoUtenDescription() {
+    public void skalIkkeFeileNarArgumentSjekkesMedMockito() {
         Argument argument = new Argument();
         argument.a = 1;
         argument.b = 2;
@@ -148,8 +144,13 @@ public class MatchBuilderTest {
         }));
     }
 
-    @Test(expected = AssertionError.class)
-    public void skalKunneSjekkeArgumentverdierMedMockitoUtenDescription() {
+    @Test
+    public void skalKunneSjekkeArgumentverdierMedMockito() {
+        expectedException.expect(AssertionError.class);
+        expectedException.handleAssertionErrors();
+        expectedException.expectMessage("matchBuilderTest.sjekkArgumentverdierPa(");
+        expectedException.expectMessage("sjekker verdier pa argument");
+
         Argument argument = new Argument();
         argument.a = 1;
         argument.b = 1;
@@ -183,53 +184,53 @@ public class MatchBuilderTest {
         new MatchBuilder().failIfMismatch(1, 1, "Skal feile hvis verdiene er ulike. Det er de ikke og derfor feiler det ikke");
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void skalFeileVedMismatchNarDetErMismatchMellomVerdier() {
+        expectedException.expect(AssertionError.class);
+        expectedException.handleAssertionErrors();
+        expectedException.expectMessage("Skal feile hvis verdiene er ulike. Det er de og derfor feiler det");
+
         new MatchBuilder().failIfMismatch(1, is(equalTo(2)), "Skal feile hvis verdiene er ulike. Det er de og derfor feiler det");
     }
 
     @Test
     public void skalKunneLageRealVsExpectedMismatchDescriptionNarEnkelMismatchMedBooleanBrukes() {
-        try {
-            assertThat(new Object(), new TypeSafeDiagnosingMatcher<Object>() {
-                @Override
-                protected boolean matchesSafely(Object obj, Description mismatchDescription) {
-                    return new MatchBuilder()
-                            .matches(false, "boolean test som feiler" + provideExpectedVsRealValue("en tom liste", "nada"))
-                            .isMatch();
-                }
+        expectedException.expect(AssertionError.class);
+        expectedException.handleAssertionErrors();
+        expectedException.expectMessage("boolean test som feiler [expected: en tom liste | real: nada]");
 
-                @Override
-                public void describeTo(Description description) {
-                    description.appendText("real vs expected");
-                }
-            });
+        assertThat(new Object(), new TypeSafeDiagnosingMatcher<Object>() {
+            @Override
+            protected boolean matchesSafely(Object obj, Description mismatchDescription) {
+                return new MatchBuilder()
+                        .matches(false, "boolean test som feiler" + provideExpectedVsRealValue("en tom liste", "nada"))
+                        .isMatch();
+            }
 
-            fail("Forventet feil i assert");
-        } catch (AssertionError assertionError) {
-            assertThat("Feilbeskrivelse i feilmelding", assertionError.getMessage(), containsString("boolean test som feiler [expected: en tom liste | real: nada]"));
-        }
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("real vs expected");
+            }
+        });
     }
 
     @Test
     public void skalFeileVedMatchPaaBooleanVerdier() {
-        try {
-            assertThat(emptyList(), new TypeSafeDiagnosingMatcher<List<Object>>() {
-                @Override
-                public boolean matchesSafely(List<Object> item, Description mismatchDescription) {
-                    return new MatchBuilder().failIfMatch(item.isEmpty(), "lista skal ikke vare tom").isMatch();
-                }
+        expectedException.expect(AssertionError.class);
+        expectedException.handleAssertionErrors();
+        expectedException.expectMessage("lista skal ikke vare tom");
 
-                @Override
-                public void describeTo(Description description) {
-                    description.appendText("feil grunnet tom liste");
-                }
-            });
+        assertThat(emptyList(), new TypeSafeDiagnosingMatcher<List<Object>>() {
+            @Override
+            public boolean matchesSafely(List<Object> item, Description mismatchDescription) {
+                return new MatchBuilder().failIfMatch(item.isEmpty(), "lista skal ikke vare tom").isMatch();
+            }
 
-            fail("Forventet feil i assert");
-        } catch (AssertionError ae) {
-            assertThat("Feilbeskrivelse i feilmelding", ae.getMessage(), containsString("lista skal ikke vare tom"));
-        }
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("feil grunnet tom liste");
+            }
+        });
     }
 
     private static class Argument {

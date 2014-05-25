@@ -27,8 +27,11 @@ public class EqualsMatchingTest {
         testEqualsMatching = new EqualsMatching(new Bean(true));
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void skalFeileNarManSammenlignerBonnerSomErUlikeForLikhet() {
+        expectedException.expect(AssertionError.class);
+        expectedException.handleAssertionErrors();
+
         assertFalse(testEqualsMatching.isEqualTo(new Bean(false)).isMatch());
     }
 
@@ -37,8 +40,11 @@ public class EqualsMatchingTest {
         assertTrue(testEqualsMatching.isEqualTo(new Bean(true)).isMatch());
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void skalFeileNarManSammenlignerBonnerSomErLikeForUlikhet() {
+        expectedException.expect(AssertionError.class);
+        expectedException.handleAssertionErrors();
+
         assertFalse(testEqualsMatching.isNotEqualTo(new Bean(true)).isMatch());
     }
 
