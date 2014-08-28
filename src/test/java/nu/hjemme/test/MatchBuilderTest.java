@@ -139,7 +139,6 @@ public class MatchBuilderTest {
 
             @Override
             public void describeTo(Description description) {
-                description.appendText("sjekker verdier pa argument");
             }
         }));
     }
@@ -148,8 +147,8 @@ public class MatchBuilderTest {
     public void skalKunneSjekkeArgumentverdierMedMockito() {
         expectedException.expect(AssertionError.class);
         expectedException.handleAssertionErrors();
-        expectedException.expectMessage("matchBuilderTest.sjekkArgumentverdierPa(");
-        expectedException.expectMessage("sjekker verdier pa argument");
+        expectedException.expectMessage("Matching produced failures:");
+        expectedException.expectMessage("'1' does not match 'is <2>'");
 
         Argument argument = new Argument();
         argument.a = 1;
@@ -169,7 +168,6 @@ public class MatchBuilderTest {
 
             @Override
             public void describeTo(Description description) {
-                description.appendText("sjekker verdier pa argument");
             }
         }));
     }

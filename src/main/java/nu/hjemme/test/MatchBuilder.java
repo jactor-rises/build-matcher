@@ -3,14 +3,15 @@ package nu.hjemme.test;
 import org.hamcrest.Matcher;
 
 /**
- * Hjelpeklasse for å evaluere flere feil på en assert som inneholder en feilmelding med expected vs real. Kan brukes på en {@link AssertionError}.
+ * Hjelpeklasse for å evaluere flere feil på en assert som inneholder en feilmelding med expected vs real. Feilmeldingen brukes på en {@link AssertionError}.
  */
 public class MatchBuilder {
-    private boolean mismatch;
-    private StringBuilder mismatchDescriptions;
-    private String expectedValue;
+    private final String expectedValue;
+    private final StringBuilder mismatchDescriptions;
 
     public MatchBuilder() {
+        mismatchDescriptions = new StringBuilder("Matching produced failures:");
+        expectedValue = null;
     }
 
     public MatchBuilder(String expectedValue) {
@@ -23,16 +24,24 @@ public class MatchBuilder {
      * @return <code>true</code> if match
      */
     public boolean isMatch() {
-        if (mismatch && mismatchDescriptions != null) {
+        if (hasFailures()) {
             throw new AssertionError(mismatchDescriptions.toString());
         }
 
-        return !mismatch;
+        return hasNoFailures();
+    }
+
+    private boolean hasFailures() {
+        return mismatchDescriptions.length() != mismatchDescriptions.indexOf(":") + 1;
+    }
+
+    private boolean hasNoFailures() {
+        return !hasFailures();
     }
 
     public MatchBuilder matches(boolean match, String mismatchDescription) {
         if (!match) {
-            setMismatchWith(mismatchDescription);
+            return setMismatchWith(mismatchDescription);
         }
 
         return this;
@@ -41,15 +50,12 @@ public class MatchBuilder {
     private MatchBuilder setMismatchWith(String mismatchDescription) {
         doNewMismatchDescription();
         mismatchDescriptions.append(mismatchDescription);
-        mismatch = true;
 
         return this;
     }
 
     private void doNewMismatchDescription() {
-        if (mismatchDescriptions == null) {
-            mismatchDescriptions = new StringBuilder("");
-        } else {
+        if (mismatchDescriptions.length() != 0) {
             mismatchDescriptions.append("\n          ");
         }
     }
@@ -81,7 +87,7 @@ public class MatchBuilder {
 
     public MatchBuilder matches(boolean match) {
         if (!match) {
-            mismatch = true;
+            setMismatchWith("boolean does not match");
         }
 
         return this;
@@ -89,7 +95,7 @@ public class MatchBuilder {
 
     public <T> MatchBuilder matches(T real, Matcher<T> expected) {
         if (!expected.matches(real)) {
-            mismatch = true;
+            setMismatchWith("'" + real + "' does not match '" + expected +"'");
         }
 
         return this;
