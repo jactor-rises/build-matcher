@@ -83,7 +83,7 @@ public class MatchBuilder {
 
     public <T> MatchBuilder matches(T real, Matcher<T> expected) {
         if (!expected.matches(real)) {
-            setMismatchWith("'" + real + "' does not match '" + expected +"'");
+            setMismatchWith("'" + real + "' does not match '" + expected + "'");
         }
 
         return this;
@@ -107,7 +107,7 @@ public class MatchBuilder {
     private Throwable provideRootCauseOf(Exception exception) {
         Throwable cause = exception;
 
-        while(cause.getCause() != null) {
+        while (cause.getCause() != null) {
             cause = cause.getCause();
         }
 
