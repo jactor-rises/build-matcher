@@ -68,18 +68,6 @@ public class MatchBuilder {
         throw new AssertionError(matchBuilder.mismatchDescriptions.toString());
     }
 
-    public MatchBuilder failIfMatch(boolean match, String failureMessage) {
-        return match ? fail(setMismatchWith(failureMessage)) : this;
-    }
-
-    public <T> MatchBuilder failIfMatch(T real, T expected, String mismatchDescription) {
-        return isMatch(real, expected) ? fail(setMismatchWith(mismatchDescription + provideExpectedVsRealValue(expected, real))) : this;
-    }
-
-    public <T> MatchBuilder failIfMatch(T real, Matcher<T> expected, String mismatchDescription) {
-        return expected.matches(real) ? fail(setMismatchWith(mismatchDescription)) : this;
-    }
-
     @SuppressWarnings("unchecked")
     private <T> boolean isMatch(T real, T expected) {
         return !(expected instanceof Matcher) ? expected != null && expected.equals(real) || real == null && expected == null : ((Matcher<T>) expected).matches(real);
@@ -107,6 +95,23 @@ public class MatchBuilder {
 
     public <T> MatchBuilder failIfMismatch(T real, Matcher<T> expected, String mismatchDescription) {
         return !expected.matches(real) ? fail(setMismatchWith(mismatchDescription + provideExpectedVsRealValue(expected, real))) : this;
+    }
+
+    public void failWith(Exception exception) {
+        @SuppressWarnings("ThrowableResultOfMethodCallIgnored") Throwable rootCause = provideRootCauseOf(exception);
+        mismatchDescriptions.append(rootCause.getClass().getName()).append(": ").append(rootCause.getMessage());
+
+        fail(this);
+    }
+
+    private Throwable provideRootCauseOf(Exception exception) {
+        Throwable cause = exception;
+
+        while(cause.getCause() != null) {
+            cause = cause.getCause();
+        }
+
+        return cause;
     }
 
     public static String provideExpectedVsRealValue(Object expected, Object real) {

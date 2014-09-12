@@ -3,13 +3,11 @@ package nu.hjemme.test;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.util.List;
-
-import static java.util.Collections.emptyList;
 import static nu.hjemme.test.MatchBuilder.provideExpectedVsRealValue;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -18,7 +16,6 @@ import static org.hamcrest.core.AnyOf.anyOf;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.argThat;
-import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -37,10 +34,13 @@ public class MatchBuilderTest {
         );
     }
 
+    @Before
+    public void handleAssertionErrors() {
+        expectedException.handleAssertionErrors();
+    }
+
     @Test
     public void skalKunneLeggeTilFeilmeldingerForHverEnkelSjekk() {
-        expectedException.expect(AssertionError.class);
-        expectedException.handleAssertionErrors();
         expectedException.expectMessage("hashcode");
         expectedException.expectMessage("likhet");
         expectedException.expectMessage("toString()");
@@ -56,29 +56,8 @@ public class MatchBuilderTest {
     }
 
     @Test
-    public void skalKunneAvslutteMatchBuilderUtenException() {
-        expectedException.expect(AssertionError.class);
-        expectedException.handleAssertionErrors();
-        expectedException.expectMessage("avoid NullpointerException");
-        expectedException.expectMessage(not(contains("skal ikke skje")));
-
-        Object obj = new Object();
-
-        assertTrue(new MatchBuilder("NullPointer exception skal ikke komme")
-                        .failIfMatch(obj, obj, "avoid NullpointerException")
-                        .matches(throwNullPointerException(), "skal ikke skje")
-                        .isMatch()
-        );
-    }
-
-    private boolean throwNullPointerException() {
-        throw new NullPointerException("testfeil");
-    }
-
-    @Test
     public void skalKunneSeToStringPaaObjektreferanserSomSjekkesForLikhet() {
         expectedException.expect(AssertionError.class);
-        expectedException.handleAssertionErrors();
         expectedException.expectMessage(" [expected: ");
         expectedException.expectMessage("| real: ");
 
@@ -93,7 +72,6 @@ public class MatchBuilderTest {
     @Test
     public void skalKunneBrukeMatchersForAsserter() {
         expectedException.expect(AssertionError.class);
-        expectedException.handleAssertionErrors();
         expectedException.expectMessage("expected: (<101> or <0>)");
 
         Object obj = new Object();
@@ -102,21 +80,6 @@ public class MatchBuilderTest {
                         .matches(obj.hashCode(), anyOf(equalTo(101), equalTo(0)), "uventet hashcode")
                         .isMatch()
         );
-    }
-
-    @Test
-    public void skalFeileUmiddelbartMedMatchOgBrukAvHamcrestMatchers() {
-        expectedException.expect(AssertionError.class);
-        expectedException.handleAssertionErrors();
-        expectedException.expectMessage("Objektene skal vare like (objektene er samme instans og feiler derfor)");
-
-        Object object = new Object();
-        new MatchBuilder().failIfMatch(object, is(equalTo(object)), "Objektene skal vare like (objektene er samme instans og feiler derfor)");
-    }
-
-    @Test
-    public void skalIkkeFeileMedMatchOgBrukAvHamcrestMatchers() {
-        new MatchBuilder().failIfMatch(new Object(), is(equalTo(new Object())), "Objektene skal ikke vare like (objektene er ikke like og feiler ikke)");
     }
 
     @Test
@@ -146,7 +109,6 @@ public class MatchBuilderTest {
     @Test
     public void skalKunneSjekkeArgumentverdierMedMockito() {
         expectedException.expect(AssertionError.class);
-        expectedException.handleAssertionErrors();
         expectedException.expectMessage("Matching produced failures:");
         expectedException.expectMessage("'1' does not match 'is <2>'");
 
@@ -185,7 +147,6 @@ public class MatchBuilderTest {
     @Test
     public void skalFeileVedMismatchNarDetErMismatchMellomVerdier() {
         expectedException.expect(AssertionError.class);
-        expectedException.handleAssertionErrors();
         expectedException.expectMessage("Skal feile hvis verdiene er ulike. Det er de og derfor feiler det");
 
         new MatchBuilder().failIfMismatch(1, is(equalTo(2)), "Skal feile hvis verdiene er ulike. Det er de og derfor feiler det");
@@ -194,7 +155,6 @@ public class MatchBuilderTest {
     @Test
     public void skalKunneLageRealVsExpectedMismatchDescriptionNarEnkelMismatchMedBooleanBrukes() {
         expectedException.expect(AssertionError.class);
-        expectedException.handleAssertionErrors();
         expectedException.expectMessage("boolean test som feiler [expected: en tom liste | real: nada]");
 
         assertThat(new Object(), new TypeSafeDiagnosingMatcher<Object>() {
@@ -208,25 +168,6 @@ public class MatchBuilderTest {
             @Override
             public void describeTo(Description description) {
                 description.appendText("real vs expected");
-            }
-        });
-    }
-
-    @Test
-    public void skalFeileVedMatchPaaBooleanVerdier() {
-        expectedException.expect(AssertionError.class);
-        expectedException.handleAssertionErrors();
-        expectedException.expectMessage("lista skal ikke vare tom");
-
-        assertThat(emptyList(), new TypeSafeDiagnosingMatcher<List<Object>>() {
-            @Override
-            public boolean matchesSafely(List<Object> item, Description mismatchDescription) {
-                return new MatchBuilder().failIfMatch(item.isEmpty(), "lista skal ikke vare tom").isMatch();
-            }
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("feil grunnet tom liste");
             }
         });
     }

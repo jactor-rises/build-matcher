@@ -17,12 +17,20 @@ public abstract class NotNullBuildMatching<T> extends BaseMatcher<T> {
     @Override
     public boolean matches(Object item) {
         if (item != null) {
-            matches((T) item, matchBuilder);
+            exceptionSafeMatching((T) item);
         } else {
             throw new AssertionError(matchBuilder.getExpectedValue() + ": Instance to test is null!");
         }
 
         return matchBuilder.isMatch();
+    }
+
+    private void exceptionSafeMatching(T item) {
+        try {
+            matches(item, matchBuilder);
+        } catch (Exception e) {
+            matchBuilder.failWith(e);
+        }
     }
 
     @Override
