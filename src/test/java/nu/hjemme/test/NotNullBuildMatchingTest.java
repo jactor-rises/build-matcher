@@ -111,4 +111,18 @@ public class NotNullBuildMatchingTest {
             }
         });
     }
+
+    @Test
+    public void skalHaLinjenummerTilDerHvorExceptionOppstod() {
+        expectedException.expect(AssertionError.class);
+        expectedException.expectMessage(UnsupportedOperationException.class.getName() + " occurred at line number " + 124);
+
+        assertThat(true, new NotNullBuildMatching<Boolean>("Feil som forteller hvor exception oppstod") {
+
+            @Override
+            public MatchBuilder matches(Boolean typeToTest, MatchBuilder matchBuilder) {
+                throw new UnsupportedOperationException();
+            }
+        });
+    }
 }

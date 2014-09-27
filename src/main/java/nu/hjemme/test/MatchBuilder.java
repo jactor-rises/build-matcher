@@ -20,7 +20,7 @@ public class MatchBuilder {
     }
 
     /**
-     * NOTE! In case of a mismatch with discription, then this method will throw an {@link java.lang.AssertionError} with this descriptions.
+     * NOTE! In case of a mismatch with discription(s), then this method will throw an {@link java.lang.AssertionError} with this descriptions.
      * @return <code>true</code> if match
      */
     public boolean isMatch() {
@@ -98,8 +98,8 @@ public class MatchBuilder {
     }
 
     public void failWith(Exception exception) {
-        @SuppressWarnings("ThrowableResultOfMethodCallIgnored") Throwable rootCause = provideRootCauseOf(exception);
-        mismatchDescriptions.append(rootCause.getClass().getName()).append(": ").append(rootCause.getMessage());
+        Throwable rootCause = provideRootCauseOf(exception);
+        appendErrorMessageWithLineNumberFrom(rootCause);
 
         fail(this);
     }
@@ -114,11 +114,22 @@ public class MatchBuilder {
         return cause;
     }
 
+    private void appendErrorMessageWithLineNumberFrom(Throwable rootCause) {
+        doNewMismatchDescription();
+        mismatchDescriptions.append(classNameOf(rootCause)).append(": ").append(rootCause.getMessage());
+        doNewMismatchDescription();
+        mismatchDescriptions.append(classNameOf(rootCause)).append(" occurred at line number ").append(rootCause.getStackTrace()[0].getLineNumber());
+    }
+
+    private String classNameOf(Throwable throwable) {
+        return throwable.getClass().getName();
+    }
+
     public static String provideExpectedVsRealValue(Object expected, Object real) {
         return " [expected: " + expected + " | real: " + real + "]";
     }
 
-    protected String getExpectedValue() {
+    String getExpectedValue() {
         return expectedValue;
     }
 }
