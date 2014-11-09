@@ -9,7 +9,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class NotNullBuildMatchingTest {
+public class TypeSafeBuildMatcherTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -21,7 +21,7 @@ public class NotNullBuildMatchingTest {
 
     @Test
     public void skalKunneBrukesNarMatchingMedOrgJunitAssertAssertThatSamtMatchBuilderOgIkkeFeileNarRiktig() {
-        assertThat(true, new NotNullBuildMatching<Boolean>("skal vere true") {
+        assertThat(true, new TypeSafeBuildMatcher<Boolean>("skal vere true") {
             @Override
             public MatchBuilder matches(Boolean item, MatchBuilder matchBuilder) {
                 return matchBuilder.matches(item, equalTo(true));
@@ -34,7 +34,7 @@ public class NotNullBuildMatchingTest {
         expectedException.expect(AssertionError.class);
         expectedException.expectMessage("skal vere false");
 
-        assertThat(true, new NotNullBuildMatching<Boolean>("skal vere false") {
+        assertThat(true, new TypeSafeBuildMatcher<Boolean>("skal vere false") {
             @Override
             public MatchBuilder matches(Boolean item, MatchBuilder matchBuilder) {
                 return matchBuilder.matches(item, is(equalTo(false)), "prop skal vere false");
@@ -47,7 +47,7 @@ public class NotNullBuildMatchingTest {
         expectedException.expect(AssertionError.class);
         expectedException.expectMessage("skal feile uten NullpointerException ved null");
 
-        assertThat(null, new NotNullBuildMatching<Boolean>("skal feile uten NullpointerException ved null") {
+        assertThat(null, new TypeSafeBuildMatcher<Boolean>("skal feile uten NullpointerException ved null") {
             @Override
             public MatchBuilder matches(Boolean item, MatchBuilder matchBuilder) {
                 throw new UnsupportedOperationException("skal aldri komme til denne metoden hvis instansen som testes er null");
@@ -60,7 +60,7 @@ public class NotNullBuildMatchingTest {
         expectedException.expect(AssertionError.class);
         expectedException.expectMessage("Et exception skal bare feile NotNullBuildMatching");
 
-        assertThat(true, new NotNullBuildMatching<Boolean>("Et exception skal bare feile NotNullBuildMatching") {
+        assertThat(true, new TypeSafeBuildMatcher<Boolean>("Et exception skal bare feile NotNullBuildMatching") {
 
             @Override
             public MatchBuilder matches(Boolean typeToTest, MatchBuilder matchBuilder) {
@@ -74,7 +74,7 @@ public class NotNullBuildMatchingTest {
         expectedException.expect(AssertionError.class);
         expectedException.expectMessage("Exception som oppstod under matching");
 
-        assertThat(true, new NotNullBuildMatching<Boolean>("Et exception skal bare feile NotNullBuildMatching") {
+        assertThat(true, new TypeSafeBuildMatcher<Boolean>("Et exception skal bare feile NotNullBuildMatching") {
 
             @Override
             public MatchBuilder matches(Boolean typeToTest, MatchBuilder matchBuilder) {
@@ -88,7 +88,7 @@ public class NotNullBuildMatchingTest {
         expectedException.expect(AssertionError.class);
         expectedException.expectMessage(UnsupportedOperationException.class.getName());
 
-        assertThat(true, new NotNullBuildMatching<Boolean>("Et exception skal bare feile NotNullBuildMatching") {
+        assertThat(true, new TypeSafeBuildMatcher<Boolean>("Et exception skal bare feile NotNullBuildMatching") {
 
             @Override
             public MatchBuilder matches(Boolean typeToTest, MatchBuilder matchBuilder) {
@@ -102,7 +102,7 @@ public class NotNullBuildMatchingTest {
         expectedException.expect(AssertionError.class);
         expectedException.expectMessage("En feil som fremdeles skal vises");
 
-        assertThat(true, new NotNullBuildMatching<Boolean>("Et exception skal bare feile NotNullBuildMatching") {
+        assertThat(true, new TypeSafeBuildMatcher<Boolean>("Et exception skal bare feile NotNullBuildMatching") {
 
             @Override
             public MatchBuilder matches(Boolean typeToTest, MatchBuilder matchBuilder) {
@@ -117,7 +117,7 @@ public class NotNullBuildMatchingTest {
         expectedException.expect(AssertionError.class);
         expectedException.expectMessage(UnsupportedOperationException.class.getName() + " occurred at line number " + 124);
 
-        assertThat(true, new NotNullBuildMatching<Boolean>("Feil som forteller hvor exception oppstod") {
+        assertThat(true, new TypeSafeBuildMatcher<Boolean>("Feil som forteller hvor exception oppstod") {
 
             @Override
             public MatchBuilder matches(Boolean typeToTest, MatchBuilder matchBuilder) {
