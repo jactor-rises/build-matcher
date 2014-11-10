@@ -140,19 +140,6 @@ public class MatchBuilderTest {
     }
 
     @Test
-    public void skalIkkeFeileVedMismatchNarDetErMatchMellomVerdier() {
-        new MatchBuilder().failIfMismatch(1, 1, "Skal feile hvis verdiene er ulike. Det er de ikke og derfor feiler det ikke");
-    }
-
-    @Test
-    public void skalFeileVedMismatchNarDetErMismatchMellomVerdier() {
-        expectedException.expect(AssertionError.class);
-        expectedException.expectMessage("Skal feile hvis verdiene er ulike. Det er de og derfor feiler det");
-
-        new MatchBuilder().failIfMismatch(1, is(equalTo(2)), "Skal feile hvis verdiene er ulike. Det er de og derfor feiler det");
-    }
-
-    @Test
     public void skalKunneLageRealVsExpectedMismatchDescriptionNarEnkelMismatchMedBooleanBrukes() {
         expectedException.expect(AssertionError.class);
         expectedException.expectMessage("boolean test som feiler [expected: en tom liste | real: nada]");
