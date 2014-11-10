@@ -68,11 +68,6 @@ public class MatchBuilder {
         throw new AssertionError(matchBuilder.mismatchDescriptions.toString());
     }
 
-    @SuppressWarnings("unchecked")
-    private <T> boolean isMatch(T real, T expected) {
-        return !(expected instanceof Matcher) ? expected != null && expected.equals(real) || real == null && expected == null : ((Matcher<T>) expected).matches(real);
-    }
-
     public MatchBuilder matches(boolean match) {
         if (!match) {
             setMismatchWith("boolean does not match");
@@ -87,14 +82,6 @@ public class MatchBuilder {
         }
 
         return this;
-    }
-
-    public <T> MatchBuilder failIfMismatch(T real, T expected, String mismatchDescription) {
-        return !isMatch(real, expected) ? fail(setMismatchWith(mismatchDescription + provideExpectedVsRealValue(expected, real))) : this;
-    }
-
-    public <T> MatchBuilder failIfMismatch(T real, Matcher<T> expected, String mismatchDescription) {
-        return !expected.matches(real) ? fail(setMismatchWith(mismatchDescription + provideExpectedVsRealValue(expected, real))) : this;
     }
 
     public void failWith(Exception exception) {
