@@ -26,7 +26,7 @@ public abstract class TypeSafeBuildMatcher<T> extends TypeSafeMatcher<T> {
 
     @Override
     public final void describeTo(Description description) {
-        description.appendText(matchBuilder.getExpectedValue());
+        description.appendText(matchBuilder.getExpectedValueMessage());
     }
 
     public abstract MatchBuilder matches(T typeToTest, MatchBuilder matchBuilder);
