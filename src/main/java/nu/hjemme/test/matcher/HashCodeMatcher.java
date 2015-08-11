@@ -1,9 +1,9 @@
-package nu.hjemme.test;
+package nu.hjemme.test.matcher;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
-import static nu.hjemme.test.DescriptionMatcher.is;
+import static nu.hjemme.test.matcher.DescriptionMatcher.is;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;

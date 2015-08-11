@@ -1,8 +1,8 @@
-package nu.hjemme.test;
+package nu.hjemme.test.matcher;
 
 import org.junit.Test;
 
-import static nu.hjemme.test.DescriptionMatcher.is;
+import static nu.hjemme.test.matcher.DescriptionMatcher.is;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.AllOf.allOf;

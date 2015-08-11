@@ -1,4 +1,4 @@
-package nu.hjemme.test;
+package nu.hjemme.test.matcher;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static nu.hjemme.test.DescriptionMatcher.is;
+import static nu.hjemme.test.matcher.DescriptionMatcher.is;
 
 /**
- * A matcher which will perform with the {@link nu.hjemme.test.MatchBuilder}. So it is possible to do several matches in one assert without using
- * {@link nu.hjemme.test.TypeSafeBuildMatcher}. One drawbacks of using this, vs. {@link nu.hjemme.test.TypeSafeBuildMatcher} is that an exception will be thrown and
+ * A matcher which will perform with the {@link MatchBuilder}. So it is possible to do several matches in one assert without using
+ * {@link TypeSafeBuildMatcher}. One drawbacks of using this, vs. {@link TypeSafeBuildMatcher} is that an exception will be thrown and
  * not be reported as an error. This will also cause other failure messages tho be hidden. Another drawback is that all asserting must be done on the same type as the one sent to
  * the <code>assertThat</code> and it is impossible to do invocations on the item being asserted.
  * @author Tor Egil Jacobsen

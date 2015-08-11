@@ -1,9 +1,9 @@
-package nu.hjemme.test;
+package nu.hjemme.test.matcher;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
-import static nu.hjemme.test.DescriptionMatcher.is;
+import static nu.hjemme.test.matcher.DescriptionMatcher.is;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.sameInstance;
@@ -27,7 +27,7 @@ public final class EqualsMatcher extends BaseMatcher<Object> {
 
     @Override
     public boolean matches(Object item) {
-        BuildMatcher<Object> equalsMatching = new BuildMatcher<Object>(is(equalTo(item), ALWAYS_TRUE_COVERAGE), is(not(equalTo((Object) new OtherType())), ALWAYS_TRUE_COVERAGE));
+        BuildMatcher<Object> equalsMatching = new BuildMatcher<>(is(equalTo(item), ALWAYS_TRUE_COVERAGE), is(not(equalTo((Object) new OtherType())), ALWAYS_TRUE_COVERAGE));
         equalsMatching.appendMatchBuild(item, is(equalTo(shouldBeEqual)), IS_EQUAL_WITH_HINT);
         equalsMatching.appendMatchBuild(shouldBeEqual, is(equalTo((item))), IS_EQUAL_WITH_HINT);
         equalsMatching.appendMatchBuild(item, is(not(sameInstance(shouldBeEqual))), NOT_SAME_INSTANCE);

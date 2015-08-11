@@ -1,4 +1,4 @@
-package nu.hjemme.test;
+package nu.hjemme.test.matcher;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hamcrest.Description;
@@ -45,7 +45,7 @@ public class DescriptionMatcher<T> extends Is<T> {
      * @return a mismatch description matcher
      */
     public static <T> DescriptionMatcher<T> is(Matcher<T> matcher, String mismatchDescription) {
-        return new DescriptionMatcher<T>(matcher, mismatchDescription);
+        return new DescriptionMatcher<>(matcher, mismatchDescription);
     }
 
     public String getDescrption() {

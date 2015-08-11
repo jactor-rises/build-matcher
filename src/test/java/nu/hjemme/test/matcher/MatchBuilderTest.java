@@ -1,4 +1,4 @@
-package nu.hjemme.test;
+package nu.hjemme.test.matcher;
 
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
@@ -6,7 +6,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static nu.hjemme.test.DescriptionMatcher.is;
+import static nu.hjemme.test.matcher.DescriptionMatcher.is;
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;

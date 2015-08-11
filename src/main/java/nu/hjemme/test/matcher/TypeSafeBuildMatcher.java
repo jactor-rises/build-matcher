@@ -1,10 +1,10 @@
-package nu.hjemme.test;
+package nu.hjemme.test.matcher;
 
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 
 /**
- * En {@link org.hamcrest.Matcher} som bruker {@link nu.hjemme.test.MatchBuilder} for lettleselig matching av forventede resultater.
+ * En {@link org.hamcrest.Matcher} som bruker {@link MatchBuilder} for lettleselig matching av forventede resultater.
  */
 public abstract class TypeSafeBuildMatcher<T> extends TypeSafeMatcher<T> {
     private final MatchBuilder matchBuilder;

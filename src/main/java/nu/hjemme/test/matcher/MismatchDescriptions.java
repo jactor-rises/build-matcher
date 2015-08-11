@@ -1,4 +1,4 @@
-package nu.hjemme.test;
+package nu.hjemme.test.matcher;
 
 /**
  * All mismatch descriptions of a {@link MatchBuilder} and its expected value
@@ -6,19 +6,17 @@ package nu.hjemme.test;
  * @author Tor Egil Jacobsen - Accenture
  */
 class MismatchDescriptions {
-    private final String expectedValueMessage;
+    private final ExpectedDescription expectedDescription;
     private final StringBuilder allMismatchDescriptions;
 
     MismatchDescriptions() {
-        expectedValueMessage = null;
+        expectedDescription = new ExpectedDescription();
         allMismatchDescriptions = new StringBuilder();
     }
 
     MismatchDescriptions(String expectedValueMessage) {
-        this.expectedValueMessage = expectedValueMessage;
-        this.allMismatchDescriptions = new StringBuilder("\nExpected \"")
-                .append(expectedValueMessage)
-                .append("\", but there was failures:");
+        expectedDescription = new ExpectedDescription(expectedValueMessage);
+        this.allMismatchDescriptions = new StringBuilder() ;
     }
 
     boolean hasMismatchDescriptions() {
@@ -43,7 +41,7 @@ class MismatchDescriptions {
     }
 
     private MatchBuilder fail() {
-        throw new AssertionError(getAll());
+        throw new AssertionError(provideExpectedVsFailures());
     }
 
     private void appendToFailureMessageWith(Exception exception) {
@@ -64,11 +62,11 @@ class MismatchDescriptions {
         appendMismatchWith("Caused by " + cause.getClass().getName() + " at " + cause.getStackTrace()[0]);
     }
 
-    String getAll() {
-        return allMismatchDescriptions.toString();
+    String provideExpectedVsFailures() {
+        return expectedDescription.get().append(allMismatchDescriptions.toString()).toString();
     }
 
-    String getExpectedValueMessage() {
-        return expectedValueMessage;
+    String getExpectedDescritpion() {
+        return expectedDescription.get().toString();
     }
 }

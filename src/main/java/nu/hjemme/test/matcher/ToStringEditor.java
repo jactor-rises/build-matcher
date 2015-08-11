@@ -1,4 +1,4 @@
-package nu.hjemme.test;
+package nu.hjemme.test.matcher;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Matcher;

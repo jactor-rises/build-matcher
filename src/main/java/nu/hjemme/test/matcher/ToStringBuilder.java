@@ -1,4 +1,4 @@
-package nu.hjemme.test;
+package nu.hjemme.test.matcher;
 
 import org.hamcrest.Matcher;
 
@@ -13,10 +13,7 @@ class ToStringBuilder {
     private final ToStringEditor<?> toStringEditor;
 
     ToStringBuilder(Object expected, Object real, MatchBuilder matchBuilder) {
-        this.expected = expected;
-        this.real = real;
-        this.matchBuilder = matchBuilder;
-        toStringEditor = null;
+        this(expected, real, matchBuilder, null);
     }
 
     ToStringBuilder(Object expected, Object real, MatchBuilder matchBuilder, ToStringEditor<?> toStringEditor) {

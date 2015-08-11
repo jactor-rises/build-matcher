@@ -1,10 +1,11 @@
-package nu.hjemme.test;
+package nu.hjemme.test.matcher;
 
+import nu.hjemme.test.matcher.HashCodeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static nu.hjemme.test.HashCodeMatcher.hasImplementedHashCodeAccordingTo;
+import static nu.hjemme.test.matcher.HashCodeMatcher.hasImplementedHashCodeAccordingTo;
 import static org.junit.Assert.assertThat;
 
 public class HashCodeMatcherTest {
@@ -75,7 +76,7 @@ public class HashCodeMatcherTest {
         }
     }
 
-    private static enum HashCodeType {
+    private enum HashCodeType {
         RANDOM,
         NORMAL
     }

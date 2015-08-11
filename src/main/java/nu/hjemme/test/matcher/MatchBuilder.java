@@ -1,4 +1,4 @@
-package nu.hjemme.test;
+package nu.hjemme.test.matcher;
 
 /**
  * Hjelpeklasse for å evaluere flere feil på en assert som inneholder en feilmelding med expected vs real. Feilmeldingen brukes sammen med en {@link AssertionError}.
@@ -21,7 +21,7 @@ public class MatchBuilder {
      */
     public boolean isMatch() {
         if (mismatch && mismatchDescriptions.hasMismatchDescriptions()) {
-            throw new AssertionError(mismatchDescriptions.getAll());
+            throw new AssertionError(mismatchDescriptions.provideExpectedVsFailures());
         }
 
         return !mismatch;
@@ -60,6 +60,6 @@ public class MatchBuilder {
     }
 
     public String getExpectedValueMessage() {
-        return mismatchDescriptions.getExpectedValueMessage();
+        return mismatchDescriptions.getExpectedDescritpion();
     }
 }
