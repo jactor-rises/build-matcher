@@ -41,7 +41,7 @@ public class HashCodeMatcherTest {
         assertThat(new HashCodeBean(true), hasImplementedHashCodeAccordingTo(new HashCodeBean(true), new HashCodeBean(true)));
     }
 
-    private static class HashCodeBean {
+    private class HashCodeBean {
         private final boolean booleanProperty;
         private final HashCodeType hashCodeType;
 

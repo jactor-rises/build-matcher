@@ -171,7 +171,7 @@ public class MatchBuilderTest {
         });
     }
 
-    private static class Argument {
+    private class Argument {
         int a;
         int b;
 
@@ -186,7 +186,7 @@ public class MatchBuilderTest {
         int value = ++counter;
     }
 
-    private static class MyToStringEditor extends ToStringEditor<ObjectWithoutToString> {
+    private class MyToStringEditor extends ToStringEditor<ObjectWithoutToString> {
 
         public MyToStringEditor() {
             super(ObjectWithoutToString.class);

@@ -1,6 +1,5 @@
 package nu.hjemme.test.matcher;
 
-import nu.hjemme.test.matcher.EqualsMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -43,7 +42,7 @@ public class EqualsMatcherTest {
         assertThat(equalEqualsBean, hasImplenetedEqualsMethodUsing(equalEqualsBean, new EqualsBean(false)));
     }
 
-    private static final class EqualsBean {
+    private final static class EqualsBean {
         private final boolean booleanProperty;
 
         private EqualsBean(boolean booleanProperty) {
