@@ -56,7 +56,7 @@ public class MatchBuilder {
     }
 
     public void failWith(Exception exception) {
-        mismatchDescriptions.appendToFailureMessagesUsing(exception);
+        mismatchDescriptions.appendExceptionToFailureMessageUsing(exception);
     }
 
     public String getExpectedValueMessage() {

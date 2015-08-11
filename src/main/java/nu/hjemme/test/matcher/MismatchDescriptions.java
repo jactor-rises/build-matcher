@@ -1,8 +1,9 @@
 package nu.hjemme.test.matcher;
 
+import javax.xml.stream.events.StartElement;
+
 /**
  * All mismatch descriptions of a {@link MatchBuilder} and its expected value
- *
  * @author Tor Egil Jacobsen - Accenture
  */
 class MismatchDescriptions {
@@ -16,7 +17,7 @@ class MismatchDescriptions {
 
     MismatchDescriptions(String expectedValueMessage) {
         expectedDescription = new ExpectedDescription(expectedValueMessage);
-        this.allMismatchDescriptions = new StringBuilder() ;
+        this.allMismatchDescriptions = new StringBuilder();
     }
 
     boolean hasMismatchDescriptions() {
@@ -24,18 +25,12 @@ class MismatchDescriptions {
     }
 
     void appendMismatchWith(String mismatchDescription) {
-        appendNewMismatchDescription();
+        allMismatchDescriptions.append("\n          ");
         allMismatchDescriptions.append(mismatchDescription);
     }
 
-    private void appendNewMismatchDescription() {
-        if (hasMismatchDescriptions()) {
-            allMismatchDescriptions.append("\n          ");
-        }
-    }
-
-    void appendToFailureMessagesUsing(Exception exception) {
-        appendToFailureMessageWith(exception);
+    void appendExceptionToFailureMessageUsing(Exception exception) {
+        appendToFailureMessageUsing(exception);
         appendCauseOf(exception);
         fail();
     }
@@ -44,9 +39,31 @@ class MismatchDescriptions {
         throw new AssertionError(provideExpectedVsFailures());
     }
 
-    private void appendToFailureMessageWith(Exception exception) {
-        appendMismatchWith("An unexpeced exception occurred: " + exception.getClass().getName());
-        appendMismatchWith(exception.getStackTrace()[0] + ": " + exception.getMessage());
+    private void appendToFailureMessageUsing(Exception exception) {
+        StackTraceElement[] stackTrace = exception.getStackTrace();
+        String exceptionClassName = exception.getClass().getName();
+        boolean inTest = stackTrace[0].getClassName().endsWith("Test");
+
+        appentToFailuremessageUsing(exception.getMessage(), stackTrace, exceptionClassName, inTest);
+    }
+
+    private void appentToFailuremessageUsing(String exceptionMessage, StackTraceElement[] stackTrace, String exceptionClassName, boolean inTest) {
+        appendMismatchWith("An unexpeced exception occurred: " + exceptionClassName);
+        appendMismatchWith(stackTrace[0] + ": " + exceptionMessage);
+
+        if (!inTest) {
+            appendMismatchWith(provideStackTraceFromnTestUsing(stackTrace));
+        }
+    }
+
+    private String provideStackTraceFromnTestUsing(StackTraceElement[] stackTrace) {
+        for(StackTraceElement stackTraceElement : stackTrace) {
+            if (stackTraceElement.getClassName().endsWith("Test")) {
+                return "occured in the test at " + stackTraceElement;
+            }
+        }
+
+        return "occured in the test, but was unable to determine StackTraceElement";
     }
 
     private void appendCauseOf(Exception exception) {
