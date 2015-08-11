@@ -7,7 +7,7 @@ import org.hamcrest.StringDescription;
 import org.hamcrest.core.Is;
 
 /**
- * An {@link org.hamcrest.core.Is} {@link org.hamcrest.Matcher}
+ * A  {@link org.hamcrest.Matcher} extending {@link org.hamcrest.core.Is}
  * @param <T> type to match
  * @author Tor Egil Jacobsen
  */
@@ -40,12 +40,12 @@ public class DescriptionMatcher<T> extends Is<T> {
 
     /**
      * @param matcher to match the type
-     * @param mismatchDescription for the match, typically the name of the variable to match
+     * @param description for the match, typically the name of the variable to match
      * @param <T> type being matched
-     * @return a mismatch description matcher
+     * @return a description matcher
      */
-    public static <T> DescriptionMatcher<T> is(Matcher<T> matcher, String mismatchDescription) {
-        return new DescriptionMatcher<>(matcher, mismatchDescription);
+    public static <T> DescriptionMatcher<T> is(Matcher<T> matcher, String description) {
+        return new DescriptionMatcher<>(matcher, description);
     }
 
     public String getDescrption() {
