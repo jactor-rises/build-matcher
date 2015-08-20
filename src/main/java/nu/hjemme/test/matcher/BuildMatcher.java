@@ -48,7 +48,7 @@ public class BuildMatcher<T> extends TypeSafeMatcher<T> {
         matchBuilder.matches(type, is(matcher, mismatchDescription));
     }
 
-    public static <T> Matcher<T> matches(Matcher<T>... matcher) {
+    public static <MT> Matcher<MT> matches(Matcher<MT>... matcher) {
         return new BuildMatcher<>(matcher);
     }
 }
