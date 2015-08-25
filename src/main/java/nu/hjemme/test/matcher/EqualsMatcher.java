@@ -26,7 +26,7 @@ public final class EqualsMatcher extends BaseMatcher<Object> {
 
     @Override
     public boolean matches(Object item) {
-        return new TypeSafeBuildMatcher<Object>("Correct implementation of equals") {
+        return new TypeSafeBuildMatcher<Object>("Matching of equals method according to java specifications") {
             @Override public MatchBuilder matches(Object typeToTest, MatchBuilder matchBuilder) {
                 return matchBuilder
                         .matches(typeToTest, is(allOf(equalTo(typeToTest), not(equalTo(new OtherType()))), ALWAYS_TRUE))
@@ -39,9 +39,7 @@ public final class EqualsMatcher extends BaseMatcher<Object> {
     }
 
     @Override
-    public void describeTo(Description description) {
-        description.appendText("Matching of equals method according to java specifications");
-    }
+    public void describeTo(Description description) { }
 
     public static EqualsMatcher hasImplenetedEqualsMethodUsing(Object equalBean, Object unequalBean) {
         return new EqualsMatcher(equalBean, unequalBean);

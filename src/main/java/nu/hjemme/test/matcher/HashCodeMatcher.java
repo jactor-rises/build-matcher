@@ -31,9 +31,7 @@ public final class HashCodeMatcher extends BaseMatcher<Object> {
 
     @Override
     public boolean matches(Object item) {
-
-        return new TypeSafeBuildMatcher<Object>("Correct implementation of hashCode") {
-
+        return new TypeSafeBuildMatcher<Object>("Implementation of hashCode() according to the java specification") {
             @Override public MatchBuilder matches(Object typeToTest, MatchBuilder matchBuilder) {
                 int hashCode = item != null ? item.hashCode() : 0;
                 int consecutiveHashCode = item != null ? item.hashCode() : 0;
@@ -52,7 +50,5 @@ public final class HashCodeMatcher extends BaseMatcher<Object> {
     }
 
     @Override
-    public void describeTo(Description description) {
-        description.appendText("Implementation of hashCode() according to the java specification");
-    }
+    public void describeTo(Description description) { }
 }
