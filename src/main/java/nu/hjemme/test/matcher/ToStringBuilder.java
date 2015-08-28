@@ -2,10 +2,7 @@ package nu.hjemme.test.matcher;
 
 import org.hamcrest.Matcher;
 
-/**
- * A builder of strings regarding expected vs. real values...
- * @author Tor Egil Jacobsen - Accenture
- */
+/** A builder of strings regarding expected vs. real values... */
 class ToStringBuilder {
     private final Object expected;
     private final Object real;

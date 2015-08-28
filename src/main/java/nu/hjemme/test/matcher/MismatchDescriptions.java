@@ -1,11 +1,6 @@
 package nu.hjemme.test.matcher;
 
-import javax.xml.stream.events.StartElement;
-
-/**
- * All mismatch descriptions of a {@link MatchBuilder} and its expected value
- * @author Tor Egil Jacobsen - Accenture
- */
+/** All mismatch descriptions of a {@link MatchBuilder} and its expected value */
 class MismatchDescriptions {
     private final ExpectedDescription expectedDescription;
     private final StringBuilder allMismatchDescriptions;
@@ -57,7 +52,7 @@ class MismatchDescriptions {
     }
 
     private String provideStackTraceFromnTestUsing(StackTraceElement[] stackTrace) {
-        for(StackTraceElement stackTraceElement : stackTrace) {
+        for (StackTraceElement stackTraceElement : stackTrace) {
             if (stackTraceElement.getClassName().endsWith("Test")) {
                 return "occured in the test at " + stackTraceElement;
             }

@@ -12,11 +12,10 @@ import static java.util.Arrays.asList;
 import static nu.hjemme.test.matcher.DescriptionMatcher.is;
 
 /**
- * A matcher which will perform with the {@link MatchBuilder}. So it is possible to do several matches in one assert without using
- * {@link TypeSafeBuildMatcher}. One drawbacks of using this, vs. {@link TypeSafeBuildMatcher} is that an exception will be thrown and
- * not be reported as an error. This will also cause other failure messages tho be hidden. Another drawback is that all asserting must be done on the same type as the one sent to
- * the <code>assertThat</code> and it is impossible to do invocations on the item being asserted.
- * @author Tor Egil Jacobsen
+ * A matcher which will perform with the {@link MatchBuilder}. So it is possible to do several matches in one assert without using {@link TypeSafeBuildMatcher}. One drawbacks of
+ * using this, vs. {@link TypeSafeBuildMatcher} is that an exception will be thrown and not be reported as an error. This will also cause other failure messages tho be hidden.
+ * Another drawback is that all asserting must be done on the same type as the one sent to the <code>assertThat</code> and it is impossible to do invocations on the item being
+ * asserted.
  */
 public class BuildMatcher<T> extends TypeSafeMatcher<T> {
     private static final ReflectiveTypeFinder TYPE_FINDER = new ReflectiveTypeFinder("matchesSafely", 1, 0);

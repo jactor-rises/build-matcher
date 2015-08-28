@@ -9,7 +9,6 @@ import org.hamcrest.core.Is;
 /**
  * A {@link org.hamcrest.Matcher} extending {@link org.hamcrest.core.Is}
  * @param <T> type to match
- * @author Tor Egil Jacobsen
  */
 public class DescriptionMatcher<T> extends Is<T> {
 

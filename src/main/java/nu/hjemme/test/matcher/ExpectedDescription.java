@@ -1,8 +1,5 @@
 package nu.hjemme.test.matcher;
 
-/**
- * @author Tor Egil Jacobsen
- */
 class ExpectedDescription {
     private final StringBuilder expectedDescription;
 
