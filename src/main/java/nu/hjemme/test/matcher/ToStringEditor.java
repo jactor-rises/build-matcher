@@ -19,7 +19,7 @@ public abstract class ToStringEditor<T> {
      */
     protected abstract String toString(T type);
 
-    String retrieveStringFor(Object object) {
+    String fetchStringFor(Object object) {
         if (object == null) {
             return null;
         }

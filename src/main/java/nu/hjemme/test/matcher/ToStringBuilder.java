@@ -34,7 +34,7 @@ class ToStringBuilder {
             return null;
         }
 
-        String objectToString = toStringEditor == null ? object.toString() : toStringEditor.retrieveStringFor(object);
+        String objectToString = toStringEditor == null ? object.toString() : toStringEditor.fetchStringFor(object);
 
         if (object instanceof Matcher || objectToString.indexOf(0) == '"') {
             return objectToString;
