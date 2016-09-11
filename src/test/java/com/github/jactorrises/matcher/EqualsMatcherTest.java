@@ -1,10 +1,11 @@
-package nu.hjemme.test.matcher;
+package com.github.jactorrises.matcher;
 
+import com.github.jactorrises.matcher.EqualsMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static nu.hjemme.test.matcher.EqualsMatcher.hasImplenetedEqualsMethodUsing;
+import static com.github.jactorrises.matcher.EqualsMatcher.hasImplenetedEqualsMethodUsing;
 import static org.junit.Assert.assertThat;
 
 public class EqualsMatcherTest {

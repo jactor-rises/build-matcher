@@ -1,11 +1,11 @@
-package nu.hjemme.test.matcher;
+package com.github.jactorrises.matcher;
 
-import nu.hjemme.test.matcher.HashCodeMatcher;
+import com.github.jactorrises.matcher.HashCodeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static nu.hjemme.test.matcher.HashCodeMatcher.hasImplementedHashCodeAccordingTo;
+import static com.github.jactorrises.matcher.HashCodeMatcher.hasImplementedHashCodeAccordingTo;
 import static org.junit.Assert.assertThat;
 
 public class HashCodeMatcherTest {

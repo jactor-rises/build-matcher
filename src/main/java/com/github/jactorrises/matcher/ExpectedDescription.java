@@ -1,4 +1,4 @@
-package nu.hjemme.test.matcher;
+package com.github.jactorrises.matcher;
 
 class ExpectedDescription {
     private final StringBuilder expectedDescription;

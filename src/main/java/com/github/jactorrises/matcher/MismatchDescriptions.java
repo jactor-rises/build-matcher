@@ -1,4 +1,4 @@
-package nu.hjemme.test.matcher;
+package com.github.jactorrises.matcher;
 
 /** All mismatch descriptions of a {@link MatchBuilder} and its expected value */
 class MismatchDescriptions {

@@ -1,4 +1,4 @@
-package nu.hjemme.test.matcher;
+package com.github.jactorrises.matcher;
 
 /**
  * Hjelpeklasse for å evaluere flere feil på en assert som inneholder en feilmelding med expected vs real. Feilmeldingen brukes sammen med en {@link AssertionError}.

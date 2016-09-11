@@ -1,4 +1,4 @@
-package nu.hjemme.test.matcher;
+package com.github.jactorrises.matcher;
 
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;

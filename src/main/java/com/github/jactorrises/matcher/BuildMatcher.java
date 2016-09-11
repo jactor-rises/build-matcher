@@ -1,4 +1,4 @@
-package nu.hjemme.test.matcher;
+package com.github.jactorrises.matcher;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static nu.hjemme.test.matcher.DescriptionMatcher.is;
+import static com.github.jactorrises.matcher.DescriptionMatcher.is;
 
 /**
  * A matcher which will perform with the {@link MatchBuilder}. So it is possible to do several matches in one assert without using {@link TypeSafeBuildMatcher}. One drawbacks of

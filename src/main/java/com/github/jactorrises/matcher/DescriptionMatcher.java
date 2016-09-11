@@ -1,4 +1,4 @@
-package nu.hjemme.test.matcher;
+package com.github.jactorrises.matcher;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hamcrest.Description;

@@ -1,8 +1,9 @@
-package nu.hjemme.test.matcher;
+package com.github.jactorrises.matcher;
 
+import com.github.jactorrises.matcher.DescriptionMatcher;
 import org.junit.Test;
 
-import static nu.hjemme.test.matcher.DescriptionMatcher.is;
+import static com.github.jactorrises.matcher.DescriptionMatcher.is;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.AllOf.allOf;
