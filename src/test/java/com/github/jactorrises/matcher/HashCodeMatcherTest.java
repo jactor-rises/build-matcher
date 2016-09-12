@@ -1,12 +1,12 @@
 package com.github.jactorrises.matcher;
 
-import com.github.jactorrises.matcher.HashCodeMatcher;
+import static com.github.jactorrises.matcher.HashCodeMatcher.hasImplementedHashCodeAccordingTo;
+
+import static org.junit.Assert.assertThat;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import static com.github.jactorrises.matcher.HashCodeMatcher.hasImplementedHashCodeAccordingTo;
-import static org.junit.Assert.assertThat;
 
 public class HashCodeMatcherTest {
     @Rule

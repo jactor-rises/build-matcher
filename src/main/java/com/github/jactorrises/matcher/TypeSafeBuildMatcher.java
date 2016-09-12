@@ -4,7 +4,7 @@ import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 
 /**
- * En {@link org.hamcrest.Matcher} som bruker {@link MatchBuilder} for lettleselig matching av forventede resultater.
+ * A {@link org.hamcrest.Matcher} which will use {@link MatchBuilder} to do multiple assertions on a.
  */
 public abstract class TypeSafeBuildMatcher<T> extends TypeSafeMatcher<T> {
     private final MatchBuilder matchBuilder;

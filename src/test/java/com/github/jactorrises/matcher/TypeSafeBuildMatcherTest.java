@@ -1,15 +1,14 @@
 package com.github.jactorrises.matcher;
 
-import com.github.jactorrises.matcher.MatchBuilder;
-import com.github.jactorrises.matcher.TypeSafeBuildMatcher;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
 import static com.github.jactorrises.matcher.DescriptionMatcher.is;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class TypeSafeBuildMatcherTest {
 

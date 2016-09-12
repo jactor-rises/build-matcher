@@ -2,7 +2,6 @@
 
 Main goal of project:
 How to do many matches using only one assertThat in a junit-test
-* BuildMatcher
 * TypeSafeBuildMatcher
 
 "Side effects":

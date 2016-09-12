@@ -25,7 +25,7 @@ class ToStringBuilder {
         return matchBuilder;
     }
 
-    String provideExpectedVsRealValue() {
+    private String provideExpectedVsRealValue() {
         return " [expected: " + provideQuotesAndNumberClass(expected, toStringEditor) + " | real: " + provideQuotesAndNumberClass(real, toStringEditor) + "]";
     }
 
