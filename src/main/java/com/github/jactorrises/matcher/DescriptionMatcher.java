@@ -7,26 +7,26 @@ import org.hamcrest.StringDescription;
 import org.hamcrest.core.Is;
 
 /**
- * A {@link org.hamcrest.Matcher} extending {@link org.hamcrest.core.Is} and provides labeling of standard {@link org.hamcrest.Matcher} failure strings.
+ * A {@link org.hamcrest.Matcher} extending {@link org.hamcrest.core.Is} and provides labeling of standard {@link org.hamcrest.Matcher} failure messages.
  *
  * @param <T> type to match
  */
 public class DescriptionMatcher<T> extends Is<T> {
 
-    private final String description;
+    private final String label;
 
-    public DescriptionMatcher(Matcher<T> matcher, String description) {
+    public DescriptionMatcher(Matcher<T> matcher, String label) {
         super(matcher);
-        this.description = description;
+        this.label = label;
     }
 
     @Override public void describeTo(Description description) {
-        description.appendText(this.description).appendText(" ");
+        description.appendText(this.label).appendText(" ");
         super.describeTo(description);
     }
 
     @Override public int hashCode() {
-        return new HashCodeBuilder().append(description).toHashCode();
+        return new HashCodeBuilder().append(label).toHashCode();
     }
 
     @Override public String toString() {
@@ -37,15 +37,15 @@ public class DescriptionMatcher<T> extends Is<T> {
 
     /**
      * @param matcher to match the type
-     * @param description for the match, typically the name of the variable to match
+     * @param label for the match, typically the name of the variable to match
      * @param <T> type being matched
-     * @return a description matcher
+     * @return a label matcher
      */
-    public static <T> DescriptionMatcher<T> is(Matcher<T> matcher, String description) {
-        return new DescriptionMatcher<>(matcher, description);
+    public static <T> DescriptionMatcher<T> is(Matcher<T> matcher, String label) {
+        return new DescriptionMatcher<>(matcher, label);
     }
 
-    public String getDescrption() {
-        return description;
+    public String getLabel() {
+        return label;
     }
 }

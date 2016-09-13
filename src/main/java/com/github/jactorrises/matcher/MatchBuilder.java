@@ -36,7 +36,7 @@ public class MatchBuilder {
      * @return a {@link MatchBuilder} with this and any older matches
      */
     public <T> MatchBuilder matches(T real, DescriptionMatcher<T> expected) {
-        return expected.matches(real) ? this : new ToStringBuilder(expected, real, this).describeMismastchWith(expected.getDescrption());
+        return expected.matches(real) ? this : new ToStringBuilder(expected, real, this).describeMismastchWith(expected.getLabel());
     }
 
     /**
@@ -47,7 +47,7 @@ public class MatchBuilder {
      * @return a {@link MatchBuilder} with this and any older matches
      */
     public <T> MatchBuilder matches(T real, DescriptionMatcher<T> expected, ToStringEditor<?> toStringEditor) {
-        return expected.matches(real) ? this : new ToStringBuilder(expected, real, this, toStringEditor).describeMismastchWith(expected.getDescrption());
+        return expected.matches(real) ? this : new ToStringBuilder(expected, real, this, toStringEditor).describeMismastchWith(expected.getLabel());
     }
 
     MatchBuilder appendMismatchWith(String mismatchDescription) {
