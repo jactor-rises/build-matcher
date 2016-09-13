@@ -3,7 +3,6 @@ package com.github.jactorrises.matcher;
 import static com.github.jactorrises.matcher.DescriptionMatcher.is;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Rule;
@@ -16,8 +15,8 @@ public class TypeSafeBuildMatcherTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void skalKunneBrukesNarMatchingMedOrgJunitAssertAssertThatSamtMatchBuilderOgIkkeFeileNarRiktig() {
-        assertThat(true, new TypeSafeBuildMatcher<Boolean>("skal vere true") {
+    public void shouldVerifyWithTypeSafeBuildMatcher() {
+        assertThat(true, new TypeSafeBuildMatcher<Boolean>("should be true") {
             @Override
             public MatchBuilder matches(Boolean item, MatchBuilder matchBuilder) {
                 return matchBuilder.matches(item, is(equalTo(true), "boolean match"));
@@ -26,38 +25,24 @@ public class TypeSafeBuildMatcherTest {
     }
 
     @Test
-    public void skalKunneBrukesNarMatchingMedOrgJunitAssertSinAssertThatSamtMatchBuilderOgFeileVedFeil() {
+    public void shouldNotVerifyWithTypeSafeBuildMatcher() {
         expectedException.expect(AssertionError.class);
-        expectedException.expectMessage("skal vere false");
+        expectedException.expectMessage("should be false");
 
-        assertThat(true, new TypeSafeBuildMatcher<Boolean>("skal vere false") {
+        assertThat(true, new TypeSafeBuildMatcher<Boolean>("should be false") {
             @Override
             public MatchBuilder matches(Boolean item, MatchBuilder matchBuilder) {
-                return matchBuilder.matches(item, is(equalTo(false), "prop skal vere false"));
+                return matchBuilder.matches(item, is(equalTo(false), "boolean match"));
             }
         });
     }
 
     @Test
-    public void skalIkkeMatcheNullInstans() {
+    public void shouldThrowAnAssertionErrorWhenExceptionOccursWithinTheMatcher() {
         expectedException.expect(AssertionError.class);
-        expectedException.expectMessage("skal feile uten NullpointerException ved null");
-        expectedException.expectMessage(not("skal aldri komme til denne metoden hvis instansen som testes er null"));
+        expectedException.expectMessage("An exception thrown inside the matcher should only fail the matching");
 
-        assertThat(null, new TypeSafeBuildMatcher<Boolean>("skal feile uten NullpointerException ved null") {
-            @Override
-            public MatchBuilder matches(Boolean item, MatchBuilder matchBuilder) {
-                throw new UnsupportedOperationException("skal aldri komme til denne metoden hvis instansen som testes er null");
-            }
-        });
-    }
-
-    @Test
-    public void skalKasteAssertionErrorPaBakgrunnAvExceptionUnderMatching() {
-        expectedException.expect(AssertionError.class);
-        expectedException.expectMessage("Et exception skal bare feile NotNullBuildMatching");
-
-        assertThat(true, new TypeSafeBuildMatcher<Boolean>("Et exception skal bare feile NotNullBuildMatching") {
+        assertThat(true, new TypeSafeBuildMatcher<Boolean>("An exception thrown inside the matcher should only fail the matching") {
 
             @Override
             public MatchBuilder matches(Boolean typeToTest, MatchBuilder matchBuilder) {
@@ -67,44 +52,44 @@ public class TypeSafeBuildMatcherTest {
     }
 
     @Test
-    public void skalHaAssertionErrorMedMeldingFraOpprinneligExceptionUnderMatching() {
+    public void shouldPreserveOriginalExceptionMessageOnTheAssertionErrorWhenExceptionIsThrownWithinMather() {
         expectedException.expect(AssertionError.class);
-        expectedException.expectMessage("Exception som oppstod under matching");
+        expectedException.expectMessage("Exception is thrown during matchin");
 
-        assertThat(true, new TypeSafeBuildMatcher<Boolean>("Et exception skal bare feile NotNullBuildMatching") {
+        assertThat(true, new TypeSafeBuildMatcher<Boolean>("An exception thrown inside the matcher should only fail the matching") {
 
             @Override
             public MatchBuilder matches(Boolean typeToTest, MatchBuilder matchBuilder) {
-                throw new UnsupportedOperationException("Exception som oppstod under matching");
+                throw new UnsupportedOperationException("Exception is thrown during matchin");
             }
         });
     }
 
     @Test
-    public void skalHaAssertionErrorMedNavnetTilOpprinneligExceptionSomOppstodUnderMatching() {
+    public void shouldPreserveExceptionClassNameOnTheAssertionErrorWhenExceptionIsThrownWithinMather() {
         expectedException.expect(AssertionError.class);
         expectedException.expectMessage(UnsupportedOperationException.class.getName());
 
-        assertThat(true, new TypeSafeBuildMatcher<Boolean>("Et exception skal bare feile NotNullBuildMatching") {
+        assertThat(true, new TypeSafeBuildMatcher<Boolean>("An exception thrown inside the matcher should only fail the matching") {
 
             @Override
             public MatchBuilder matches(Boolean typeToTest, MatchBuilder matchBuilder) {
-                throw new UnsupportedOperationException("Exception som oppstod under matching");
+                throw new UnsupportedOperationException("Exception is thrown during matchin");
             }
         });
     }
 
     @Test
-    public void skalHaAssertionErrorMedEventuelleEldreMismatchNarExceptionKommerUnderMatching() {
+    public void shouldPreserveAnyEvaluatedMatchesBeforeAnyExceptionOccurs() {
         expectedException.expect(AssertionError.class);
-        expectedException.expectMessage("En feil som fremdeles skal vises");
+        expectedException.expectMessage("A match failure to show");
 
-        assertThat(true, new TypeSafeBuildMatcher<Boolean>("Et exception skal bare feile TypeSafeBuildMatcher") {
+        assertThat(true, new TypeSafeBuildMatcher<Boolean>("An exception thrown inside the matcher should only fail the matching") {
 
             @Override
             public MatchBuilder matches(Boolean typeToTest, MatchBuilder matchBuilder) {
-                matchBuilder.matches(true, is(equalTo(false), "En feil som fremdeles skal vises"));
-                throw new UnsupportedOperationException("Exception som oppstod under matching");
+                matchBuilder.matches(true, is(equalTo(false), "A match failure to show"));
+                throw new UnsupportedOperationException("An exception arised during matching");
             }
         });
     }

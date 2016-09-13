@@ -4,7 +4,9 @@ import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 
 /**
- * A {@link org.hamcrest.Matcher} which will use {@link MatchBuilder} to do multiple assertions on a.
+ * A {@link org.hamcrest.Matcher} which will use {@link MatchBuilder} to do multiple assertions on a type.
+ *
+ * @param <T> the type to match
  */
 public abstract class TypeSafeBuildMatcher<T> extends TypeSafeMatcher<T> {
     private final MatchBuilder matchBuilder;

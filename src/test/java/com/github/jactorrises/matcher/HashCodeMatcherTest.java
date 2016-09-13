@@ -13,7 +13,7 @@ public class HashCodeMatcherTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void skalFeileNarHashCodeGirUlikeTallVedHvertKall() {
+    public void shouldNotVerifyWhenConsecutiveCallsGiveDifferentHashCodes() {
         expectedException.expect(AssertionError.class);
         expectedException.expectMessage(HashCodeMatcher.EQUAL_FOR_CONSECUTIVE_CALLS);
 
@@ -21,7 +21,7 @@ public class HashCodeMatcherTest {
     }
 
     @Test
-    public void skalFeileNarHashCodeErForskjelligPaBonnerSomSkalVereLike() {
+    public void shouldNotVerifyWhenDifferentHashCodesOnEqualObjects() {
         expectedException.expect(AssertionError.class);
         expectedException.expectMessage(HashCodeMatcher.EQUAL_BEANS_UNEQUAL_HASH_CODE);
 
@@ -29,12 +29,12 @@ public class HashCodeMatcherTest {
     }
 
     @Test
-    public void skalMatcheNarHashCodeErLikPaBonnerSomErLike() {
+    public void shouldMatchWhenHashCodesOnEqualObjectsAreTheSame() {
         assertThat(new HashCodeBean(true), hasImplementedHashCodeAccordingTo(new HashCodeBean(true), new HashCodeBean(false)));
     }
 
     @Test
-    public void skalFeileNarHashCodeErLikPaBonnerSomErUlike() {
+    public void shouldNotVerifyWhenEqualHashCodesOnUnequalObjects() {
         expectedException.expect(AssertionError.class);
         expectedException.expectMessage(HashCodeMatcher.UNEQUAL_OBJECTS_EQUAL_HASH_CODE);
 

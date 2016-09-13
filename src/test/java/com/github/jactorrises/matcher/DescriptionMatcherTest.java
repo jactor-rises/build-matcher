@@ -6,10 +6,16 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertThat;
+import static org.junit.rules.ExpectedException.none;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class DescriptionMatcherTest {
+
+    @Rule
+    public ExpectedException expectedException = none();
 
     @Test
     public void shouldHaveDescriptionStoredInToStringMethod() {
@@ -18,11 +24,9 @@ public class DescriptionMatcherTest {
 
     @Test
     public void shouldBeAbleToUseDescriptionOnRegularAssertThat() {
-        try {
-            assertThat("java", is(equalTo("guava"), "string match"));
-        } catch (AssertionError assertionError) {
-            assertThat(assertionError.getMessage(), allOf(containsString("string match"), containsString("is \"guava\"")));
-        }
+        expectedException.expect(AssertionError.class);
+        expectedException.expectMessage(allOf(containsString("string match"), containsString("is \"guava\"")));
 
+        assertThat("java", is(equalTo("guava"), "string match"));
     }
 }

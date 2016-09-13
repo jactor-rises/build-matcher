@@ -15,26 +15,19 @@ public class EqualsMatcherTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void skalFeileNarManSammenlignerBonnerSomErUlikeForLikhet() {
-        expectedException.expect(AssertionError.class);
-
-        assertThat(BASE, hasImplenetedEqualsMethodUsing(new EqualsBean(false), new EqualsBean(false)));
-    }
-
-    @Test
-    public void skalMatcheNarManSammenlignerBonnerSomErLikeForLikhet() {
+    public void shouldVerifyEqualMethodWithTwoUnequalObjects() {
         assertThat(BASE, hasImplenetedEqualsMethodUsing(new EqualsBean(true), new EqualsBean(false)));
     }
 
     @Test
-    public void skalFeileNarManSammenlignerBonnerSomErLikeForUlikhet() {
+    public void shouldFailWhenVerifyingEqualMethodWithTwoObjectsThatAreEqual() {
         expectedException.expect(AssertionError.class);
 
         assertThat(BASE, hasImplenetedEqualsMethodUsing(new EqualsBean(true), new EqualsBean(true)));
     }
 
     @Test
-    public void skalSjekkeAtLikeObjektHarUlikMinnereferanse() {
+    public void shouldVerifyThatTwoEqualObjectsDoNotShareTheSameMemoryReference() {
         expectedException.expect(AssertionError.class);
         expectedException.expectMessage(EqualsMatcher.NOT_SAME_INSTANCE);
 
