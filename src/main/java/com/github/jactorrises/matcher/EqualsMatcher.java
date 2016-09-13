@@ -1,20 +1,24 @@
 package com.github.jactorrises.matcher;
 
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-
 import static com.github.jactorrises.matcher.DescriptionMatcher.is;
+
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.sameInstance;
 
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+
+/**
+ * The {@link EqualsMatcher} will do a thorough testing av an objects equals method according to the java specifications.
+ */
 public final class EqualsMatcher extends BaseMatcher<Object> {
     private static final String ALWAYS_TRUE = "This should always true; same instances are equal and different types are not equal";
     private static final String UNEQUAL_BEAN_EQUAL_TO_BASE_BEAN = "Unequal bean equal to base bean?";
+    private static final String IS_EQUAL_WITH_HINT = "Not equal? Hint: base bean equal to the equal bean, but not vice versa: use 'getClass() ==' not 'instance of'";
 
     static final String NOT_SAME_INSTANCE = "The objects being tested should not be the same instance";
-    static final String IS_EQUAL_WITH_HINT = "Not equal? Hint: base bean equal to the equal bean, but not vice versa: use 'getClass() ==' not 'instance of'";
 
     private final Object shouldBeEqual;
     private final Object shouldBeUnequal;

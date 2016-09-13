@@ -9,7 +9,7 @@ import org.hamcrest.Matcher;
 public abstract class ToStringEditor<T> {
     private final Class<?> customizedStringClass;
 
-    public ToStringEditor(Class<?> customizedStringClass) {
+    protected ToStringEditor(Class<?> customizedStringClass) {
         this.customizedStringClass = customizedStringClass;
     }
 

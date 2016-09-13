@@ -1,7 +1,8 @@
 package com.github.jactorrises.matcher;
 
 /**
- * Hjelpeklasse for å evaluere flere feil på en assert som inneholder en feilmelding med expected vs real. Feilmeldingen brukes sammen med en {@link AssertionError}.
+ * The {@link MatchBuilder} will be able to build several matches and keep any failures for a single evaluation of all matches with an exception message containing expected vs
+ * real. Feilmeldingen brukes sammen med en {@link AssertionError}.
  */
 public class MatchBuilder {
     private final MismatchDescriptions mismatchDescriptions;
@@ -17,6 +18,7 @@ public class MatchBuilder {
 
     /**
      * NOTE! In case of a mismatch with description(s), then this method will throw an {@link java.lang.AssertionError} with these descriptions.
+     *
      * @return <code>true</code> if match
      */
     public boolean isMatch() {

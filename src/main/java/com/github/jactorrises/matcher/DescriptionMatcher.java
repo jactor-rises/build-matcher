@@ -7,7 +7,7 @@ import org.hamcrest.StringDescription;
 import org.hamcrest.core.Is;
 
 /**
- * A {@link org.hamcrest.Matcher} extending {@link org.hamcrest.core.Is}
+ * A {@link org.hamcrest.Matcher} extending {@link org.hamcrest.core.Is} and provides labeling of standard {@link org.hamcrest.Matcher} failure strings.
  *
  * @param <T> type to match
  */
