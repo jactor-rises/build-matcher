@@ -1,16 +1,15 @@
 package com.github.jactorrises.matcher;
 
-import static com.github.jactorrises.matcher.DescriptionMatcher.is;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
+import static com.github.jactorrises.matcher.DescriptionMatcher.is;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertThat;
 import static org.junit.rules.ExpectedException.none;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 public class DescriptionMatcherTest {
 

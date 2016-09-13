@@ -12,7 +12,7 @@ class MismatchDescriptions {
 
     MismatchDescriptions(String expectedValueMessage) {
         expectedDescription = new ExpectedDescription(expectedValueMessage);
-        this.allMismatchDescriptions = new StringBuilder();
+        allMismatchDescriptions = new StringBuilder();
     }
 
     boolean hasMismatchDescriptions() {
@@ -37,28 +37,31 @@ class MismatchDescriptions {
     private void appendToFailureMessageUsing(Exception exception) {
         StackTraceElement[] stackTrace = exception.getStackTrace();
         String exceptionClassName = exception.getClass().getName();
-        boolean inTest = stackTrace[0].getClassName().endsWith("Test");
 
-        appentToFailuremessageUsing(exception.getMessage(), stackTrace, exceptionClassName, inTest);
+        appentToFailuremessageUsing(exception.getMessage(), stackTrace, exceptionClassName);
     }
 
-    private void appentToFailuremessageUsing(String exceptionMessage, StackTraceElement[] stackTrace, String exceptionClassName, boolean inTest) {
+    private void appentToFailuremessageUsing(String exceptionMessage, StackTraceElement[] stackTrace, String exceptionClassName) {
         appendMismatchWith("An unexpeced exception occurred: " + exceptionClassName);
         appendMismatchWith(stackTrace[0] + ": " + exceptionMessage);
 
-        if (!inTest) {
+        if (!isTestStackFrom(stackTrace[0])) {
             appendMismatchWith(provideStackTraceFromnTestUsing(stackTrace));
         }
     }
 
     private String provideStackTraceFromnTestUsing(StackTraceElement[] stackTrace) {
         for (StackTraceElement stackTraceElement : stackTrace) {
-            if (stackTraceElement.getClassName().endsWith("Test")) {
+            if (isTestStackFrom(stackTraceElement)) {
                 return "occured in the test at " + stackTraceElement;
             }
         }
 
         return "occured in the test, but was unable to determine StackTraceElement";
+    }
+
+    private boolean isTestStackFrom(StackTraceElement stackTraceElement) {
+        return stackTraceElement.getClassName().endsWith("Test");
     }
 
     private void appendCauseOf(Exception exception) {

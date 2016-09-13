@@ -1,12 +1,11 @@
 package com.github.jactorrises.matcher;
 
-import static com.github.jactorrises.matcher.EqualsMatcher.hasImplenetedEqualsMethodUsing;
-
-import static org.junit.Assert.assertThat;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import static com.github.jactorrises.matcher.EqualsMatcher.hasImplenetedEqualsMethodUsing;
+import static org.junit.Assert.assertThat;
 
 public class EqualsMatcherTest {
     private static final EqualsBean BASE = new EqualsBean(true);
