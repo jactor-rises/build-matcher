@@ -11,11 +11,11 @@ import org.hamcrest.core.Is;
  *
  * @param <T> type to match
  */
-public class DescriptionMatcher<T> extends Is<T> {
+public class LabelMatcher<T> extends Is<T> {
 
     private final String label;
 
-    DescriptionMatcher(Matcher<T> matcher, String label) {
+    LabelMatcher(Matcher<T> matcher, String label) {
         super(matcher);
         this.label = label;
     }
@@ -41,8 +41,8 @@ public class DescriptionMatcher<T> extends Is<T> {
      * @param <T> type being matched
      * @return a label matcher
      */
-    public static <T> DescriptionMatcher<T> is(Matcher<T> matcher, String label) {
-        return new DescriptionMatcher<>(matcher, label);
+    public static <T> LabelMatcher<T> is(Matcher<T> matcher, String label) {
+        return new LabelMatcher<>(matcher, label);
     }
 
     String getLabel() {

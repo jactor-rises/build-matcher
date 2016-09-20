@@ -1,6 +1,6 @@
 package com.github.jactorrises.matcher;
 
-import static com.github.jactorrises.matcher.DescriptionMatcher.is;
+import static com.github.jactorrises.matcher.LabelMatcher.is;
 
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -21,11 +21,11 @@ public final class EqualsMatcher extends BaseMatcher<Object> {
     static final String NOT_SAME_INSTANCE = "The objects being tested should not be the same instance";
 
     private final Object shouldBeEqual;
-    private final Object shouldBeUnequal;
+    private final Object shouldNotBeEqual;
 
-    private EqualsMatcher(Object shouldBeEqual, Object shouldBeUnequal) {
+    private EqualsMatcher(Object shouldBeEqual, Object shouldNotBeEqual) {
         this.shouldBeEqual = shouldBeEqual;
-        this.shouldBeUnequal = shouldBeUnequal;
+        this.shouldNotBeEqual = shouldNotBeEqual;
     }
 
     @Override
@@ -37,7 +37,7 @@ public final class EqualsMatcher extends BaseMatcher<Object> {
                         .matches(typeToTest, is(equalTo(shouldBeEqual), IS_EQUAL_WITH_HINT + "/vice "))
                         .matches(shouldBeEqual, is(equalTo(typeToTest), IS_EQUAL_WITH_HINT + "/versa"))
                         .matches(typeToTest, is(not(sameInstance(shouldBeEqual)), NOT_SAME_INSTANCE))
-                        .matches(typeToTest, is(not(equalTo(shouldBeUnequal)), UNEQUAL_BEAN_EQUAL_TO_BASE_BEAN));
+                        .matches(typeToTest, is(not(equalTo(shouldNotBeEqual)), UNEQUAL_BEAN_EQUAL_TO_BASE_BEAN));
             }
         }.matches(item);
     }
@@ -49,7 +49,5 @@ public final class EqualsMatcher extends BaseMatcher<Object> {
         return new EqualsMatcher(equalBean, unequalBean);
     }
 
-    private static class OtherType {
-
-    }
+    private static class OtherType {}
 }

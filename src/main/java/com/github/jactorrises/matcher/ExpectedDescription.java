@@ -13,7 +13,7 @@ class ExpectedDescription {
                 .append('\"');
     }
 
-    public StringBuilder get() {
+    StringBuilder get() {
         return expectedDescription;
     }
 }

@@ -12,7 +12,7 @@ import org.hamcrest.TypeSafeMatcher;
 public abstract class TypeSafeBuildMatcher<T> extends TypeSafeMatcher<T> {
     private final MatchBuilder matchBuilder;
 
-    public TypeSafeBuildMatcher(String expects) {
+    protected TypeSafeBuildMatcher(String expects) {
         matchBuilder = new MatchBuilder(expects);
     }
 

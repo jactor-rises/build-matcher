@@ -3,7 +3,7 @@ package com.github.jactorrises.matcher;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
-import static com.github.jactorrises.matcher.DescriptionMatcher.is;
+import static com.github.jactorrises.matcher.LabelMatcher.is;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.sameInstance;
@@ -20,7 +20,7 @@ public final class HashCodeMatcher extends BaseMatcher<Object> {
     private final Object equalBean;
     private final Object unequalBean;
 
-    public HashCodeMatcher(Object equalBean, Object unequalBean) {
+    private HashCodeMatcher(Object equalBean, Object unequalBean) {
         this.equalBean = equalBean;
         this.unequalBean = unequalBean;
     }

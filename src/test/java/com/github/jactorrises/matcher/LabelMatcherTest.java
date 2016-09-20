@@ -4,21 +4,21 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static com.github.jactorrises.matcher.DescriptionMatcher.is;
+import static com.github.jactorrises.matcher.LabelMatcher.is;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertThat;
 import static org.junit.rules.ExpectedException.none;
 
-public class DescriptionMatcherTest {
+public class LabelMatcherTest {
 
     @Rule
     public ExpectedException expectedException = none();
 
     @Test
     public void shouldHaveDescriptionStoredInToStringMethod() {
-        assertThat(new DescriptionMatcher<>(equalTo(new Object()), "the object to match").toString(), containsString("the object to match is <java.lang.Object@"));
+        assertThat(new LabelMatcher<>(equalTo(new Object()), "the object to match").toString(), containsString("the object to match is <java.lang.Object@"));
     }
 
     @Test

@@ -2,17 +2,17 @@ package com.github.jactorrises.matcher;
 
 /**
  * The {@link MatchBuilder} will be able to build several matches and keep any failures for a single evaluation of all matches with an exception message containing expected vs
- * real. Feilmeldingen brukes sammen med en {@link AssertionError}.
+ * real. The failure message is thrown with a {@link AssertionError}.
  */
-public class MatchBuilder {
+public final class MatchBuilder {
     private final MismatchDescriptions mismatchDescriptions;
     private boolean mismatch;
 
-    public MatchBuilder() {
+    MatchBuilder() {
         mismatchDescriptions = new MismatchDescriptions();
     }
 
-    public MatchBuilder(String expectedValue) {
+    MatchBuilder(String expectedValue) {
         mismatchDescriptions = new MismatchDescriptions(expectedValue);
     }
 
@@ -21,7 +21,7 @@ public class MatchBuilder {
      *
      * @return <code>true</code> if match
      */
-    public boolean isMatch() {
+    boolean isMatch() {
         if (mismatch && mismatchDescriptions.hasMismatchDescriptions()) {
             throw new AssertionError(mismatchDescriptions.provideExpectedVsFailures());
         }
@@ -35,7 +35,7 @@ public class MatchBuilder {
      * @param <T> generic type of value
      * @return a {@link MatchBuilder} with this and any older matches
      */
-    public <T> MatchBuilder matches(T real, DescriptionMatcher<T> expected) {
+    public <T> MatchBuilder matches(T real, LabelMatcher<T> expected) {
         return expected.matches(real) ? this : new ToStringBuilder(expected, real, this).describeMismastchWith(expected.getLabel());
     }
 
@@ -46,7 +46,7 @@ public class MatchBuilder {
      * @param <T> generic type of value
      * @return a {@link MatchBuilder} with this and any older matches
      */
-    public <T> MatchBuilder matches(T real, DescriptionMatcher<T> expected, ToStringEditor<?> toStringEditor) {
+    public <T> MatchBuilder matches(T real, LabelMatcher<T> expected, ToStringEditor<?> toStringEditor) {
         return expected.matches(real) ? this : new ToStringBuilder(expected, real, this, toStringEditor).describeMismastchWith(expected.getLabel());
     }
 
@@ -57,11 +57,11 @@ public class MatchBuilder {
         return this;
     }
 
-    public void failWith(Exception exception) {
+    void failWith(Exception exception) {
         mismatchDescriptions.appendExceptionToFailureMessageUsing(exception);
     }
 
-    public String getExpectedValueMessage() {
+    String getExpectedValueMessage() {
         return mismatchDescriptions.getExpectedDescritpion();
     }
 }
