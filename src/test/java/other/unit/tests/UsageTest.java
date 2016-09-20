@@ -2,16 +2,14 @@ package other.unit.tests;
 
 import com.github.jactorrises.matcher.EqualsMatcher;
 import com.github.jactorrises.matcher.MatchBuilder;
+import com.github.jactorrises.matcher.ToStringEditor;
 import com.github.jactorrises.matcher.TypeSafeBuildMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import static com.github.jactorrises.matcher.LabelMatcher.is;
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.rules.ExpectedException.none;
@@ -69,5 +67,29 @@ public class UsageTest {
         Object obj = new Object();
 
         assertTrue(new MatchBuilder().matches(obj.hashCode(), is(anyOf(equalTo(101), equalTo(0)), "hashcode")).isMatch());
+    }
+
+    @Test
+    public void shouldCreateCustomToStringMessageAppliccableToFailure() {
+        expectedException.expect(AssertionError.class);
+        expectedException.expectMessage(allOf(containsString("- customize is \"something else\""), not(containsString("some.horrible.MemoryReference@123456789"))));
+
+        assertThat("some.horrible.MemoryReference@123456789", new TypeSafeBuildMatcher<String>("custom toString") {
+            @Override
+            public MatchBuilder matches(String typeToTest, MatchBuilder matchBuilder) {
+                return matchBuilder.matches(typeToTest, is(equalTo("something else"), "customize"), new CustomizedToStringEditor());
+            }
+        });
+    }
+
+    private class CustomizedToStringEditor extends ToStringEditor<String> {
+        CustomizedToStringEditor() {
+            super(String.class);
+        }
+
+        @Override
+        protected String toString(String type) {
+            return type.contains("some.horrible") ? "my customized string" : "not the correct customized string";
+        }
     }
 }
