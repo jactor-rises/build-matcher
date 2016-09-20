@@ -15,7 +15,7 @@ public class DescriptionMatcher<T> extends Is<T> {
 
     private final String label;
 
-    public DescriptionMatcher(Matcher<T> matcher, String label) {
+    DescriptionMatcher(Matcher<T> matcher, String label) {
         super(matcher);
         this.label = label;
     }
@@ -45,7 +45,7 @@ public class DescriptionMatcher<T> extends Is<T> {
         return new DescriptionMatcher<>(matcher, label);
     }
 
-    public String getLabel() {
+    String getLabel() {
         return label;
     }
 }
