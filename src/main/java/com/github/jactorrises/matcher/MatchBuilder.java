@@ -8,11 +8,11 @@ public final class MatchBuilder {
     private final MismatchDescriptions mismatchDescriptions;
     private boolean mismatch;
 
-    MatchBuilder() {
+    public MatchBuilder() {
         mismatchDescriptions = new MismatchDescriptions();
     }
 
-    MatchBuilder(String expectedValue) {
+    public MatchBuilder(String expectedValue) {
         mismatchDescriptions = new MismatchDescriptions(expectedValue);
     }
 
@@ -21,7 +21,7 @@ public final class MatchBuilder {
      *
      * @return <code>true</code> if match
      */
-    boolean isMatch() {
+    public boolean isMatch() {
         if (mismatch && mismatchDescriptions.hasMismatchDescriptions()) {
             throw new AssertionError(mismatchDescriptions.provideExpectedVsFailures());
         }
@@ -36,7 +36,7 @@ public final class MatchBuilder {
      * @return a {@link MatchBuilder} with this and any older matches
      */
     public <T> MatchBuilder matches(T real, LabelMatcher<T> expected) {
-        return expected.matches(real) ? this : new ToStringBuilder(expected, real, this).describeMismastchWith(expected.getLabel());
+        return expected.matches(real) ? this : new ToStringBuilder(expected, real, this).describeMismatch();
     }
 
     /**
@@ -47,7 +47,7 @@ public final class MatchBuilder {
      * @return a {@link MatchBuilder} with this and any older matches
      */
     public <T> MatchBuilder matches(T real, LabelMatcher<T> expected, ToStringEditor<?> toStringEditor) {
-        return expected.matches(real) ? this : new ToStringBuilder(expected, real, this, toStringEditor).describeMismastchWith(expected.getLabel());
+        return expected.matches(real) ? this : new ToStringBuilder(expected, real, this, toStringEditor).describeMismatch();
     }
 
     MatchBuilder appendMismatchWith(String mismatchDescription) {

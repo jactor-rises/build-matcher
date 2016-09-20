@@ -20,13 +20,12 @@ class ToStringBuilder {
         this.toStringEditor = toStringEditor;
     }
 
-    MatchBuilder describeMismastchWith(String mismatchDescription) {
-        matchBuilder.appendMismatchWith(mismatchDescription + provideExpectedVsRealValue());
-        return matchBuilder;
+    MatchBuilder describeMismatch() {
+        return matchBuilder.appendMismatchWith(provideExpectedVsRealValue());
     }
 
     private String provideExpectedVsRealValue() {
-        return " [expected: " + provideQuotesAndNumberClass(expected, toStringEditor) + " | real: " + provideQuotesAndNumberClass(real, toStringEditor) + "]";
+        return " - " + provideQuotesAndNumberClass(expected, toStringEditor) + " | real: " + provideQuotesAndNumberClass(real, toStringEditor);
     }
 
     private static String provideQuotesAndNumberClass(Object object, ToStringEditor<?> toStringEditor) {
@@ -39,21 +38,34 @@ class ToStringBuilder {
         if (object instanceof Matcher || objectToString.indexOf(0) == '"') {
             return objectToString;
         } else if (object instanceof Number) {
-            objectToString = provideNumberClass((Number) object);
+            return provideNumberTypeMarking((Number) object);
+
         }
 
         return '"' + objectToString + '"';
     }
 
-    private static String provideNumberClass(Number number) {
-        StringBuilder numberAndType = new StringBuilder(number.toString());
+    private static String provideNumberTypeMarking(Number number) {
+        StringBuilder numberAndType;
 
-        if (number instanceof Long) {
-            numberAndType.append('L');
-        } else if (!(number instanceof Integer) && !(number instanceof Double)) {
-            numberAndType.append(" (").append(number.getClass().getSimpleName()).append(')');
+        if (number instanceof Integer) {
+            numberAndType = surround(number); // surround with <>
+        } else if (number instanceof Long) {
+            numberAndType = newStringBuilderWith(number).append('L'); //  add type L
+        } else if (!(number instanceof Double)) {
+            numberAndType = newStringBuilderWith(number).append(" (").append(number.getClass().getSimpleName()).append(')'); // add simple class name
+        } else {
+            numberAndType = surround(number); // a double type is also surrounded with <>
         }
 
         return numberAndType.toString();
+    }
+
+    private static StringBuilder surround(Number number) {
+        return new StringBuilder("<").append(number).append(">");
+    }
+
+    private static StringBuilder newStringBuilderWith(Number number) {
+        return new StringBuilder(number.toString());
     }
 }

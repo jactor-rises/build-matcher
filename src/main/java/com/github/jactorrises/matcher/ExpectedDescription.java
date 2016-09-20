@@ -4,13 +4,13 @@ class ExpectedDescription {
     private final StringBuilder expectedDescription;
 
     ExpectedDescription() {
-        this("to meet expectations");
+        this("no failures");
     }
 
     ExpectedDescription(String expectedValueMessage) {
         expectedDescription = new StringBuilder("\nExpected \"")
-                .append(expectedValueMessage != null ? expectedValueMessage : "to meet expectations")
-                .append('\"');
+                .append(expectedValueMessage != null ? expectedValueMessage : "no failures")
+                .append('"');
     }
 
     StringBuilder get() {

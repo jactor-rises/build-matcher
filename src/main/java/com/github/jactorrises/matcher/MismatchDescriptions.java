@@ -5,14 +5,17 @@ class MismatchDescriptions {
     private final ExpectedDescription expectedDescription;
     private final StringBuilder allMismatchDescriptions;
 
+    private MismatchDescriptions(ExpectedDescription expectedDescription, StringBuilder allMismatchDescriptions) {
+        this.expectedDescription = expectedDescription;
+        this.allMismatchDescriptions = allMismatchDescriptions;
+    }
+
     MismatchDescriptions() {
-        expectedDescription = new ExpectedDescription();
-        allMismatchDescriptions = new StringBuilder();
+        this(new ExpectedDescription(), new StringBuilder());
     }
 
     MismatchDescriptions(String expectedValueMessage) {
-        expectedDescription = new ExpectedDescription(expectedValueMessage);
-        allMismatchDescriptions = new StringBuilder();
+        this(new ExpectedDescription(expectedValueMessage), new StringBuilder());
     }
 
     boolean hasMismatchDescriptions() {
@@ -46,18 +49,18 @@ class MismatchDescriptions {
         appendMismatchWith(stackTrace[0] + ": " + exceptionMessage);
 
         if (!isTestStackFrom(stackTrace[0])) {
-            appendMismatchWith(provideStackTraceFromnTestUsing(stackTrace));
+            appendMismatchWith(provideStackTraceFromTestUsing(stackTrace));
         }
     }
 
-    private String provideStackTraceFromnTestUsing(StackTraceElement[] stackTrace) {
+    private String provideStackTraceFromTestUsing(StackTraceElement[] stackTrace) {
         for (StackTraceElement stackTraceElement : stackTrace) {
             if (isTestStackFrom(stackTraceElement)) {
-                return "occured in the test at " + stackTraceElement;
+                return "was thrown in the test at " + stackTraceElement;
             }
         }
 
-        return "occured in the test, but was unable to determine StackTraceElement";
+        return "was thrown in the test, but was unable to determine StackTraceElement";
     }
 
     private boolean isTestStackFrom(StackTraceElement stackTraceElement) {

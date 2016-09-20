@@ -42,10 +42,9 @@ public class TypeSafeBuildMatcherTest {
         expectedException.expectMessage("An exception thrown inside the matcher should only fail the matching");
 
         assertThat(true, new TypeSafeBuildMatcher<Boolean>("An exception thrown inside the matcher should only fail the matching") {
-
             @Override
             public MatchBuilder matches(Boolean typeToTest, MatchBuilder matchBuilder) {
-                throw new UnsupportedOperationException("Matchinbg som skaper exception");
+                throw new UnsupportedOperationException("Matching which creates an exception");
             }
         });
     }
@@ -56,10 +55,9 @@ public class TypeSafeBuildMatcherTest {
         expectedException.expectMessage("Exception is thrown during matchin");
 
         assertThat(true, new TypeSafeBuildMatcher<Boolean>("An exception thrown inside the matcher should only fail the matching") {
-
             @Override
             public MatchBuilder matches(Boolean typeToTest, MatchBuilder matchBuilder) {
-                throw new UnsupportedOperationException("Exception is thrown during matchin");
+                throw new UnsupportedOperationException("Exception is thrown during matching");
             }
         });
     }
@@ -70,10 +68,9 @@ public class TypeSafeBuildMatcherTest {
         expectedException.expectMessage(UnsupportedOperationException.class.getName());
 
         assertThat(true, new TypeSafeBuildMatcher<Boolean>("An exception thrown inside the matcher should only fail the matching") {
-
             @Override
             public MatchBuilder matches(Boolean typeToTest, MatchBuilder matchBuilder) {
-                throw new UnsupportedOperationException("Exception is thrown during matchin");
+                throw new UnsupportedOperationException("Exception is thrown during matching");
             }
         });
     }
@@ -84,11 +81,23 @@ public class TypeSafeBuildMatcherTest {
         expectedException.expectMessage("A match failure to show");
 
         assertThat(true, new TypeSafeBuildMatcher<Boolean>("An exception thrown inside the matcher should only fail the matching") {
-
             @Override
             public MatchBuilder matches(Boolean typeToTest, MatchBuilder matchBuilder) {
                 matchBuilder.matches(true, is(equalTo(false), "A match failure to show"));
-                throw new UnsupportedOperationException("An exception arised during matching");
+                throw new UnsupportedOperationException("An exception is thrown during matching");
+            }
+        });
+    }
+
+    @Test
+    public void shouldNotHaveExpectedMessageTwiceWhenFailure() {
+        expectedException.expect(AssertionError.class);
+        expectedException.expectMessage("- fail safe is \"happy case\" | real: \"failed case\"");
+
+        assertThat("failed case", new TypeSafeBuildMatcher<String>("failure messages without repetition") {
+            @Override
+            public MatchBuilder matches(String typeToTest, MatchBuilder matchBuilder) {
+                return matchBuilder.matches(typeToTest, is(equalTo("happy case"), "fail safe"));
             }
         });
     }

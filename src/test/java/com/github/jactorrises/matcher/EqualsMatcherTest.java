@@ -8,31 +8,30 @@ import static com.github.jactorrises.matcher.EqualsMatcher.hasImplenetedEqualsMe
 import static org.junit.Assert.assertThat;
 
 public class EqualsMatcherTest {
-    private static final EqualsBean BASE = new EqualsBean(true);
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void shouldVerifyEqualMethodWithTwoUnequalObjects() {
-        assertThat(BASE, hasImplenetedEqualsMethodUsing(new EqualsBean(true), new EqualsBean(false)));
+    public void shouldVerifyEqualsMethodWhenGivenOneObjectWhichIsEqualAndAnotherObjectWhicIsNotEqualToBeanGettingVerified() {
+        assertThat(new EqualsBean(true), hasImplenetedEqualsMethodUsing(new EqualsBean(true), new EqualsBean(false)));
     }
 
     @Test
-    public void shouldFailWhenVerifyingEqualMethodWithTwoObjectsThatAreEqual() {
+    public void shouldFailEqualsMatchingWhenNotVerifyingWithOneEqualBeanAndOneBeanWhichIsNotEqual() {
         expectedException.expect(AssertionError.class);
 
-        assertThat(BASE, hasImplenetedEqualsMethodUsing(new EqualsBean(true), new EqualsBean(true)));
+        assertThat(new EqualsBean(true), hasImplenetedEqualsMethodUsing(new EqualsBean(true), new EqualsBean(true)));
     }
 
     @Test
-    public void shouldVerifyThatTwoEqualObjectsDoNotShareTheSameMemoryReference() {
+    public void shouldFailEqualMethodTestingWhenTheEqualBeansAreTheSameInstance() {
         expectedException.expect(AssertionError.class);
         expectedException.expectMessage(EqualsMatcher.NOT_SAME_INSTANCE);
 
-        EqualsBean equalEqualsBean = new EqualsBean(true);
+        EqualsBean instanceOfEqualsBean = new EqualsBean(true);
 
-        assertThat(equalEqualsBean, hasImplenetedEqualsMethodUsing(equalEqualsBean, new EqualsBean(false)));
+        assertThat(instanceOfEqualsBean, hasImplenetedEqualsMethodUsing(instanceOfEqualsBean, new EqualsBean(false)));
     }
 
     private final static class EqualsBean {
@@ -44,7 +43,7 @@ public class EqualsMatcherTest {
 
         @Override
         public boolean equals(Object o) {
-            return this == o || (o instanceof EqualsBean && booleanProperty == ((EqualsBean) o).booleanProperty);
+            return this == o || (o != null && o.getClass() == EqualsBean.class && booleanProperty == ((EqualsBean) o).booleanProperty);
         }
 
         @Override

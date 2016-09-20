@@ -44,20 +44,7 @@ public class MatchBuilderTest {
     }
 
     @Test
-    public void shouldUseMatchersForAsserts() {
-        expectedException.expect(AssertionError.class);
-        expectedException.expectMessage("expected: hashcode is (<101> or <0>) | real: ");
-
-        Object obj = new Object();
-
-        assertTrue(new MatchBuilder("org.hamcrest.Matcher is added to exception message")
-                .matches(obj.hashCode(), is(anyOf(equalTo(101), equalTo(0)), "hashcode"))
-                .isMatch()
-        );
-    }
-
-    @Test
-    public void shouldVerifyArgumentWithMockito() {
+    public void shouldNotFailWhenVerifyArgumentWithMockitoWithCorrectValues() {
         Argument argument = new Argument();
         argument.a = 1;
         argument.b = 2;
@@ -81,9 +68,9 @@ public class MatchBuilderTest {
     }
 
     @Test
-    public void shouldNotVerifyArgumentWithMockito() {
+    public void shouldFailWithExpectedMessageWhenVerifyingWithMockitoAndArgumentIsNotExpected() {
         expectedException.expect(AssertionError.class);
-        expectedException.expectMessage("expected: b is <2> | real: \"1\"");
+        expectedException.expectMessage("- b is <2> | real: <1>");
 
         Argument argument = new Argument();
         argument.a = 1;
@@ -112,12 +99,12 @@ public class MatchBuilderTest {
     }
 
     @Test
-    public void shouldAddNumberTypeToNumbersVerified() {
+    public void shouldDifferentiateNumberTypesVerified() {
         expectedException.expect(AssertionError.class);
         expectedException.expectMessage("<1>");
         expectedException.expectMessage("1L");
 
-        assertThat(1L, new TypeSafeBuildMatcher<Long>("correct number subclasses") {
+        assertThat(1L, new TypeSafeBuildMatcher<Long>("correct number markings") {
             @Override
             public MatchBuilder matches(Long typeToTest, MatchBuilder matchBuilder) {
                 return matchBuilder.matches(typeToTest, is(equalTo(1), "integer vs long"));
