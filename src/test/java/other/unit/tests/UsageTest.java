@@ -8,6 +8,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import static com.github.jactorrises.matcher.HashCodeMatcher.hasImplementedHashCodeAccordingTo;
 import static com.github.jactorrises.matcher.LabelMatcher.is;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -64,7 +65,25 @@ public class UsageTest {
     }
 
     @Test
-    public void shouldReceiveAssertionErrorAsFailureMessageWhenUsingMatchBuilderToBuildMatch() {
+    public void shouldUseHashCodeMatcherToVerifyImplementationOfTheHashCodeMethod() {
+        expectedException.expect(AssertionError.class);
+        expectedException.expectMessage(allOf(containsString("Two equal objects must have equal hash code"), containsString("The two objects must be equal")));
+
+        TestHashCodeImplementation equalBean = new TestHashCodeImplementation();
+        TestHashCodeImplementation unequalBean = new TestHashCodeImplementation();
+
+        assertThat(new TestHashCodeImplementation(), hasImplementedHashCodeAccordingTo(equalBean, unequalBean));
+    }
+
+    private class TestHashCodeImplementation {
+        @Override
+        public int hashCode() {
+            return super.hashCode();
+        }
+    }
+
+    @Test
+    public void shouldReceiveAssertionErrorWithFailureMessageWhenUsingMatchBuilderToBuildMatch() {
         expectedException.expect(AssertionError.class);
         expectedException.expectMessage("- hashcode is (<101> or <0>) | real: ");
 
@@ -74,7 +93,7 @@ public class UsageTest {
     }
 
     @Test
-    public void shouldCreateCustomToStringMessageAppliccableToFailure() {
+    public void shouldCreateCustomToStringMessageApplicableToVerification() {
         expectedException.expect(AssertionError.class);
         expectedException.expectMessage(allOf(containsString("- customize is \"something else\""), not(containsString("some.horrible.MemoryReference@123456789"))));
 
