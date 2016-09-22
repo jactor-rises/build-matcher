@@ -85,7 +85,7 @@ public class UsageTest {
     @Test
     public void shouldReceiveAssertionErrorWithFailureMessageWhenUsingMatchBuilderToBuildMatch() {
         expectedException.expect(AssertionError.class);
-        expectedException.expectMessage("- hashcode is (<101> or <0>) | real: ");
+        expectedException.expectMessage(containsString("hashcode is (<101> or <0>) | real: "));
 
         Object obj = new Object();
 
@@ -100,19 +100,9 @@ public class UsageTest {
         assertThat("some.horrible.MemoryReference@123456789", new TypeSafeBuildMatcher<String>("custom toString") {
             @Override
             public MatchBuilder matches(String typeToTest, MatchBuilder matchBuilder) {
-                return matchBuilder.matches(typeToTest, is(equalTo("something else"), "customize"), new CustomizedToStringEditor());
+                return matchBuilder.matches(typeToTest, is(equalTo("something else"), "customize"), type ->
+                        type.contains("some.horrible") ? "my customized string" : "not the correct customized string");
             }
         });
-    }
-
-    private class CustomizedToStringEditor extends ToStringEditor<String> {
-        CustomizedToStringEditor() {
-            super(String.class);
-        }
-
-        @Override
-        protected String toString(String type) {
-            return type.contains("some.horrible") ? "my customized string" : "not the correct customized string";
-        }
     }
 }

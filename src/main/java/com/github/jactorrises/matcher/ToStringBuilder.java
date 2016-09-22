@@ -3,17 +3,17 @@ package com.github.jactorrises.matcher;
 import org.hamcrest.Matcher;
 
 /** A builder of strings regarding expected vs. real values... */
-class ToStringBuilder {
-    private final Object expected;
-    private final Object real;
+class ToStringBuilder<T> {
+    private final Matcher<T> expected;
+    private final T real;
     private final MatchBuilder matchBuilder;
-    private final ToStringEditor<?> toStringEditor;
+    private final ToStringEditor<T> toStringEditor;
 
-    ToStringBuilder(Object expected, Object real, MatchBuilder matchBuilder) {
+    ToStringBuilder(Matcher<T> expected, T real, MatchBuilder matchBuilder) {
         this(expected, real, matchBuilder, null);
     }
 
-    ToStringBuilder(Object expected, Object real, MatchBuilder matchBuilder, ToStringEditor<?> toStringEditor) {
+    ToStringBuilder(Matcher<T> expected, T real, MatchBuilder matchBuilder, ToStringEditor<T> toStringEditor) {
         this.expected = expected;
         this.real = real;
         this.matchBuilder = matchBuilder;
@@ -28,24 +28,23 @@ class ToStringBuilder {
         return " - " + provideQuotesAndNumberClass(expected, toStringEditor) + " | real: " + provideQuotesAndNumberClass(real, toStringEditor);
     }
 
-    private static String provideQuotesAndNumberClass(Object object, ToStringEditor<?> toStringEditor) {
+    private String provideQuotesAndNumberClass(Object object, ToStringEditor<T> toStringEditor) {
         if (object == null) {
             return null;
         }
 
-        String objectToString = toStringEditor == null ? object.toString() : toStringEditor.fetchStringFor(object);
+        String objectToString = toStringEditor == null ? object.toString() : toStringEditor.fetchStringFor(object, real.getClass());
 
         if (object instanceof Matcher || objectToString.indexOf(0) == '"') {
             return objectToString;
         } else if (object instanceof Number) {
             return provideNumberTypeMarking((Number) object);
-
         }
 
         return '"' + objectToString + '"';
     }
 
-    private static String provideNumberTypeMarking(Number number) {
+    private String provideNumberTypeMarking(Number number) {
         StringBuilder numberAndType;
 
         if (number instanceof Integer) {
@@ -61,11 +60,11 @@ class ToStringBuilder {
         return numberAndType.toString();
     }
 
-    private static StringBuilder surround(Number number) {
+    private StringBuilder surround(Number number) {
         return new StringBuilder("<").append(number).append(">");
     }
 
-    private static StringBuilder newStringBuilderWith(Number number) {
+    private StringBuilder newStringBuilderWith(Number number) {
         return new StringBuilder(number.toString());
     }
 }

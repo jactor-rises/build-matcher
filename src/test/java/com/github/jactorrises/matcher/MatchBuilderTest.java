@@ -136,8 +136,7 @@ public class MatchBuilderTest {
         assertThat(new ObjectWithoutToString(), new TypeSafeBuildMatcher<ObjectWithoutToString>("customized toString on matched object") {
             @Override
             public MatchBuilder matches(ObjectWithoutToString typeToTest, MatchBuilder matchBuilder) {
-                ToStringEditor toStringEditor = new MyToStringEditor();
-                return matchBuilder.matches(typeToTest, is(equalTo(new ObjectWithoutToString()), "two different counted values"), toStringEditor);
+                return matchBuilder.matches(typeToTest, is(equalTo(new ObjectWithoutToString()), "two different counted values"), arg -> "value=" + arg.value);
             }
         });
     }
@@ -155,17 +154,5 @@ public class MatchBuilderTest {
     private static class ObjectWithoutToString {
         static int counter;
         int value = ++counter;
-    }
-
-    private class MyToStringEditor extends ToStringEditor<ObjectWithoutToString> {
-
-        MyToStringEditor() {
-            super(ObjectWithoutToString.class);
-        }
-
-        @Override
-        public String toString(ObjectWithoutToString arg) {
-            return "value=" + arg.value;
-        }
     }
 }

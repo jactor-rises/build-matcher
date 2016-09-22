@@ -46,7 +46,7 @@ public final class MatchBuilder {
      * @param <T> generic type of value
      * @return a {@link MatchBuilder} with this and any older matches
      */
-    public <T> MatchBuilder matches(T real, LabelMatcher<T> expected, ToStringEditor<?> toStringEditor) {
+    public <T> MatchBuilder matches(T real, LabelMatcher<T> expected, ToStringEditor<T> toStringEditor) {
         return expected.matches(real) ? this : new ToStringBuilder(expected, real, this, toStringEditor).describeMismatch();
     }
 

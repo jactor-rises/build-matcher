@@ -4,28 +4,30 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Matcher;
 
 /**
- * To provide customized toString-implementations during evaluations, this class needs to be extended.
+ * To provide customized toString-implementations during evaluations
+ *
+ * @param <T> the type to create a custom string implementation for
  */
-public abstract class ToStringEditor<T> {
-    private final Class<?> customizedStringClass;
-
-    protected ToStringEditor(Class<?> customizedStringClass) {
-        this.customizedStringClass = customizedStringClass;
-    }
+public interface ToStringEditor<T> {
 
     /**
      * @param type to get a string from
-     * @return the string represented by type
+     * @return the string represented by this type
      */
-    protected abstract String toString(T type);
+    String toString(T type);
 
-    String fetchStringFor(Object object) {
+    /**
+     * @param object to get a string from
+     * @param customizedStringClass should be the class of the type to create
+     * @return the string represented by the object
+     */
+    default String fetchStringFor(Object object, Class<?> customizedStringClass) {
         if (object == null) {
             return null;
         }
 
         if (object instanceof Matcher) {
-            return matcherToString((Matcher<?>) object);
+            return matcherToString((Matcher<?>) object, customizedStringClass);
         }
 
         if (customizedStringClass.equals(object.getClass())) {
@@ -36,7 +38,7 @@ public abstract class ToStringEditor<T> {
         return object.toString();
     }
 
-    private String matcherToString(Matcher<?> matcher) {
+    default String matcherToString(Matcher<?> matcher, Class<?> customizedStringClass) {
         if (matcher.toString().contains(customizedStringClass.getSimpleName() + "@")) {
             StringBuilder matcherStringBuilder = new StringBuilder();
             appendMatcherNamesTo(matcherStringBuilder, matcher.getClass());
@@ -47,7 +49,7 @@ public abstract class ToStringEditor<T> {
         }
     }
 
-    private void appendMatcherNamesTo(StringBuilder matcherStringBuilder, Class<? extends Matcher> matcherClass) {
+    default void appendMatcherNamesTo(StringBuilder matcherStringBuilder, Class<? extends Matcher> matcherClass) {
         Class<?> toStringClass = matcherClass;
 
         while (!BaseMatcher.class.equals(toStringClass)) {
