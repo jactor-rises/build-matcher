@@ -2,20 +2,20 @@ package com.github.jactorrises.matcher;
 
 import org.hamcrest.Matcher;
 
+import java.util.Optional;
+
 /** A builder of strings regarding expected vs. real values... */
 class ToStringBuilder<T> {
-    private final Matcher<T> expected;
-    private final T real;
+    private final Match<T> expectedMatch;
     private final MatchBuilder matchBuilder;
     private final ToStringEditor<T> toStringEditor;
 
-    ToStringBuilder(Matcher<T> expected, T real, MatchBuilder matchBuilder) {
-        this(expected, real, matchBuilder, null);
+    ToStringBuilder(Match<T> expectedMatch, MatchBuilder matchBuilder) {
+        this(expectedMatch, matchBuilder, null);
     }
 
-    ToStringBuilder(Matcher<T> expected, T real, MatchBuilder matchBuilder, ToStringEditor<T> toStringEditor) {
-        this.expected = expected;
-        this.real = real;
+    ToStringBuilder(Match<T> expectedMatch, MatchBuilder matchBuilder, ToStringEditor<T> toStringEditor) {
+        this.expectedMatch = expectedMatch;
         this.matchBuilder = matchBuilder;
         this.toStringEditor = toStringEditor;
     }
@@ -25,15 +25,16 @@ class ToStringBuilder<T> {
     }
 
     private String provideExpectedVsRealValue() {
-        return " - " + provideQuotesAndNumberClass(expected, toStringEditor) + " | real: " + provideQuotesAndNumberClass(real, toStringEditor);
+        return " - " + provideQuotesAndNumberClass(expectedMatch) + " | real: " + provideQuotesAndNumberClass(expectedMatch.get());
     }
 
-    private String provideQuotesAndNumberClass(Object object, ToStringEditor<T> toStringEditor) {
+    private String provideQuotesAndNumberClass(Object object) {
         if (object == null) {
             return null;
         }
 
-        String objectToString = toStringEditor == null ? object.toString() : toStringEditor.fetchStringFor(object, real.getClass());
+        Optional<Class<?>> optionalClass = expectedMatch.fetchRealClass();
+        String objectToString = toStringEditor == null ? object.toString() : toStringEditor.fetchStringFor(object, optionalClass.isPresent() ? optionalClass.get() : null);
 
         if (object instanceof Matcher || objectToString.indexOf(0) == '"') {
             return objectToString;

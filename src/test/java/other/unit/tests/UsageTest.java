@@ -2,7 +2,6 @@ package other.unit.tests;
 
 import com.github.jactorrises.matcher.EqualsMatcher;
 import com.github.jactorrises.matcher.MatchBuilder;
-import com.github.jactorrises.matcher.ToStringEditor;
 import com.github.jactorrises.matcher.TypeSafeBuildMatcher;
 import org.junit.Rule;
 import org.junit.Test;
@@ -85,11 +84,11 @@ public class UsageTest {
     @Test
     public void shouldReceiveAssertionErrorWithFailureMessageWhenUsingMatchBuilderToBuildMatch() {
         expectedException.expect(AssertionError.class);
-        expectedException.expectMessage(containsString("hashcode is (<101> or <0>) | real: "));
+        expectedException.expectMessage(allOf(containsString("HashCode numerals"), containsString("hashCode is (<101> or <0>) | real: ")));
 
         Object obj = new Object();
 
-        assertTrue(new MatchBuilder().matches(obj.hashCode(), is(anyOf(equalTo(101), equalTo(0)), "hashcode")).isMatch());
+        assertTrue(new MatchBuilder("HashCode numerals").matches(obj.hashCode(), is(anyOf(equalTo(101), equalTo(0)), "hashCode")).isMatch());
     }
 
     @Test

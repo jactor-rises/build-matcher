@@ -6,7 +6,7 @@ package com.github.jactorrises.matcher;
  */
 public final class MatchBuilder {
     private final MismatchDescriptions mismatchDescriptions;
-    private boolean mismatch;
+    private final Matches matches = new Matches();
 
     public MatchBuilder() {
         mismatchDescriptions = new MismatchDescriptions();
@@ -19,14 +19,14 @@ public final class MatchBuilder {
     /**
      * NOTE! In case of a mismatch with description(s), then this method will throw an {@link java.lang.AssertionError} with these descriptions.
      *
-     * @return <code>true</code> if match
+     * @return {@code true} if match, {@code false} if mismatch without any descriptions
      */
     public boolean isMatch() {
-        if (mismatch && mismatchDescriptions.hasMismatchDescriptions()) {
+        if (matches.isMismatch() && mismatchDescriptions.hasMismatchDescriptions()) {
             throw new AssertionError(mismatchDescriptions.provideExpectedVsFailures());
         }
 
-        return !mismatch;
+        return matches.isMatch();
     }
 
     /**
@@ -36,7 +36,7 @@ public final class MatchBuilder {
      * @return a {@link MatchBuilder} with this and any older matches
      */
     public <T> MatchBuilder matches(T real, LabelMatcher<T> expected) {
-        return expected.matches(real) ? this : new ToStringBuilder(expected, real, this).describeMismatch();
+        return matches.append(new Match<>(real, expected)) ? this : new ToStringBuilder<>(matches.fetchLatest(), this).describeMismatch();
     }
 
     /**
@@ -47,13 +47,11 @@ public final class MatchBuilder {
      * @return a {@link MatchBuilder} with this and any older matches
      */
     public <T> MatchBuilder matches(T real, LabelMatcher<T> expected, ToStringEditor<T> toStringEditor) {
-        return expected.matches(real) ? this : new ToStringBuilder(expected, real, this, toStringEditor).describeMismatch();
+        return matches.append(new Match<>(real, expected)) ? this : new ToStringBuilder<>(matches.fetchLatest(), this, toStringEditor).describeMismatch();
     }
 
     MatchBuilder appendMismatchWith(String mismatchDescription) {
         mismatchDescriptions.appendMismatchWith(mismatchDescription);
-        mismatch = true;
-
         return this;
     }
 

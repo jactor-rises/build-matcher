@@ -3,6 +3,8 @@ package com.github.jactorrises.matcher;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Matcher;
 
+import java.util.Optional;
+
 /**
  * To provide customized toString-implementations during evaluations
  *

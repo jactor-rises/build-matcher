@@ -7,7 +7,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import static com.github.jactorrises.matcher.LabelMatcher.is;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.argThat;
@@ -20,11 +21,12 @@ public class MatchBuilderTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void shouldMatchWhenHamcrestMatchersIsSatisfied() {
+    public void shouldMatchWhenMatchersAreSatisfied() {
         Object obj = new Object();
 
         assertTrue(new MatchBuilder("An java.lang.Object is not equal to another instance of java.lang.Object")
                 .matches(obj, is(not(equalTo(new Object())), "instances"))
+                .matches(obj.getClass(), is(equalTo(Object.class), "class"))
                 .isMatch()
         );
     }
