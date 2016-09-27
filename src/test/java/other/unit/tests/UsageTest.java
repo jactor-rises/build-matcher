@@ -9,6 +9,7 @@ import org.junit.rules.ExpectedException;
 
 import static com.github.jactorrises.matcher.HashCodeMatcher.hasImplementedHashCodeAccordingTo;
 import static com.github.jactorrises.matcher.LabelMatcher.is;
+import static com.github.jactorrises.matcher.LambdaBuildMatcher.build;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.allOf;
@@ -103,5 +104,16 @@ public class UsageTest {
                         type.contains("some.horrible") ? "my customized string" : "not the correct customized string");
             }
         });
+    }
+
+    @Test
+    public void shouldUseLambdaExpressionWithBuildMatcher() {
+        expectedException.expect(AssertionError.class);
+        expectedException.expectMessage(allOf(containsString("Quotes from song"), containsString("every step you take"), containsString("every move you make")));
+
+        assertThat("I'll be watching you", build("Quotes from song", (string, buildMatcher) -> buildMatcher
+                .matches(string, is(equalTo("every step you take"), "quote one"))
+                .matches(string, is(equalTo("every move you make"), "quote two"))
+        ));
     }
 }

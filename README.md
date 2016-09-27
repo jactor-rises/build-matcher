@@ -3,6 +3,21 @@
 ### Main goal of project
 How to do many matches using only one assertThat in a junit-test
 * `TypeSafeBuildMatcher`
+* `LambdaBuildMatcher`
+
+### Example of usage
+
+    @Test
+    public void shouldUseLambdaExpressionWithBuildMatcher() {
+        expectedException.expect(AssertionError.class);
+        expectedException.expectMessage(allOf(containsString("Quotes from song"), containsString("every step you take"), containsString("every move you make")));
+
+        assertThat("I'll be watching you", build("Quotes from song", (string, buildMatcher) -> buildMatcher
+                .matches(string, is(equalTo("every step you take"), "quote one"))
+                .matches(string, is(equalTo("every move you make"), "quote two"))
+        ));
+    }
+
 
 ### Acknowledgements
 This code is build on top of hamcrest matchers, specifically: **`org.hamcrest.TypeSafeMatcher`** and **`org.hamcrest.core.Is`**
@@ -14,5 +29,6 @@ This code is build on top of hamcrest matchers, specifically: **`org.hamcrest.Ty
 * `ToStringEditor` - provides customized toString messages of evaluated objects
 
 ### Releases
-* v1.0 - can be used with jdk1.4 and greater
-* v1.1 - can be used with jdk1.8 and greater
+* v1.0 - jdk1.5 and greater
+* v1.1 - jdk1.8 and greater, converted `ToStringEditor` to a functional interface to be used with lambda expression
+* v1.2 - jdk1.8 and greater, introduced `LambdaBuildMatcher` in order to use `TypeSafeBuildMatcher` as lambda expression without having to initialize a new anonymous class
