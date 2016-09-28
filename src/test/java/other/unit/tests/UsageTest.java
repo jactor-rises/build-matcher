@@ -116,4 +116,22 @@ public class UsageTest {
                 .matches(string, is(equalTo("every move you make"), "quote two"))
         ));
     }
+
+    private final String song1 = "Human Behaviour";
+    private final String song2 = "Possibly Maybe";
+
+    @Test
+    public void shouldUseLambdaExpressionWithBuildMatcherAndCustomizedToString() {
+        expectedException.expect(AssertionError.class);
+        expectedException.expectMessage(allOf(
+                containsString("song one is \"Space Oddity\" | real: \"Human Behaviour\""),
+                containsString("song two is \"Hey You\" | real: \"Possibly Maybe\""),
+                not(containsString("other.unit.tests.UsageTest")))
+        );
+
+        assertThat(new UsageTest(), build("Song titles", (usageTest, buildMatcher) -> buildMatcher
+                .matches(usageTest.song1, is(equalTo("Space Oddity"), "song one"), asString -> usageTest.song1)
+                .matches(usageTest.song2, is(equalTo("Hey You"), "song two"), asString -> usageTest.song2)
+        ));
+    }
 }
