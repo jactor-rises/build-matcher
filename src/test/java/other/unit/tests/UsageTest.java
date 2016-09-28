@@ -112,8 +112,8 @@ public class UsageTest {
         expectedException.expectMessage(allOf(containsString("Quotes from song"), containsString("every step you take"), containsString("every move you make")));
 
         assertThat("I'll be watching you", build("Quotes from song", (string, matchBuilder) -> matchBuilder
-                .matches(string, is(equalTo("every step you take"), "quote one"))
-                .matches(string, is(equalTo("every move you make"), "quote two"))
+                .matches(string, is(containsString("every step you take"), "quote one"))
+                .matches(string, is(containsString("every move you make"), "quote two"))
         ));
     }
 

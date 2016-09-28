@@ -12,8 +12,8 @@ your matches on this type only. This should help you to keep your unit tests sma
 One key point with building matches, is usage of `LabelMatcher` to differentiate between matches being done since all failing
 tests will be shown when a failure occurs in a test. Therefore `LabelMatcher.is(<Matcher>, <label>)` must be given when building a match.
 
-Since there is a possibility that the test code will produce an exception, then it will be caught and an `AssertionError` containing
-failure messages of any failed tests, before the exception arose, will be thrown. 
+Since there is a possibility that the test code will produce an exception, the exception will be caught and an `AssertionError` containing
+failure messages of any failed tests will be thrown. 
 
 ### Example of usage
 
@@ -49,7 +49,6 @@ failure messages of any failed tests, before the exception arose, will be thrown
 
 ### Acknowledgements
 This code is build on top of hamcrest matchers, specifically: **`org.hamcrest.TypeSafeMatcher`** and **`org.hamcrest.core.Is`**
-When jdk1.9 is released, the new framwork from `org.unit`
 
 ### Side effects
 * `EqualsMatcher` - tests the implementation of the equals method according to the java specification
@@ -57,10 +56,15 @@ When jdk1.9 is released, the new framwork from `org.unit`
 * `LabelMatcher` - extends `org.hamcrest.core.Is` and provides labeling of standard `org.hamcrest.Matcher` failure messages.
 * `ToStringEditor` - provides customized toString messages of evaluated objects
 
+### Future
+When jdk1.9 is released, a new possibility of doing several asserts in one test will be added. How this implementation is done
+will affect how this code will evolve.
+
 ### Releases
 
 version | java version | description
 ---|---|---
+v1.2.1 | 1.8 and greater | the abstract method `matches` on `TypeSafeBuildMatcher` may throw any `Exception`
 v1.2 | 1.8 and greater | introduced `LambdaBuildMatcher` in order to use `TypeSafeBuildMatcher` as lambda expression without having to initialize a new anonymous class
 v1.1 | 1.8 and greater | converted `ToStringEditor` to a functional interface to be used with lambda expression
 v1.0 | 1.5 and greater | first release containing `TypeSafeBuildMatcher`, `EqualsMatcher`, `HashCodeMatcher`, `LabelMatcher`, and `ToStringEditor`
