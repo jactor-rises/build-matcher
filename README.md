@@ -5,6 +5,16 @@ How to do many matches using only one assertThat in a junit-test
 * `TypeSafeBuildMatcher`
 * `LambdaBuildMatcher`
 
+#### How it works
+When asserting with `TypeSafeBuildMatcher` or `LambdaBuildMatcher`, you make matches on one single type (one logical concept) and build
+your matches on this type only. This should help you to keep your unit tests small and easy to read/maintain.
+
+One key point with building matches, is usage of `LabelMatcher` to differentiate between matches being done since all failing
+tests will be shown when a failure occurs in a test. Therefore `LabelMatcher.is(<Matcher>, <label>)` must be given when building a match.
+
+Since there is a possibility that the test code will produce an exception, then it will be caught and an `AssertionError` containing
+failure messages of any failed tests, before the exception arose, will be thrown. 
+
 ### Example of usage
 
     @Test
@@ -12,7 +22,7 @@ How to do many matches using only one assertThat in a junit-test
         expectedException.expect(AssertionError.class);
         expectedException.expectMessage(allOf(containsString("Quotes from song"), containsString("every step you take"), containsString("every move you make")));
 
-        assertThat("I'll be watching you", build("Quotes from song", (string, buildMatcher) -> buildMatcher
+        assertThat("I'll be watching you", build("Quotes from song", (string, matchBuilder) -> matchBuilder
                 .matches(string, is(equalTo("every step you take"), "quote one"))
                 .matches(string, is(equalTo("every move you make"), "quote two"))
         ));
@@ -30,7 +40,7 @@ How to do many matches using only one assertThat in a junit-test
                 not(containsString("other.unit.tests.UsageTest")))
         );
 
-        assertThat(new UsageTest(), build("Song titles", (usageTest, buildMatcher) -> buildMatcher
+        assertThat(new UsageTest(), build("Song titles", (usageTest, matchBuilder) -> matchBuilder
                 .matches(usageTest.song1, is(equalTo("Space Oddity"), "song one"), asString -> usageTest.song1)
                 .matches(usageTest.song2, is(equalTo("Hey You"), "song two"), asString -> usageTest.song2)
         ));
