@@ -39,6 +39,7 @@ How to do many matches using only one assertThat in a junit-test
 
 ### Acknowledgements
 This code is build on top of hamcrest matchers, specifically: **`org.hamcrest.TypeSafeMatcher`** and **`org.hamcrest.core.Is`**
+When jdk1.9 is released, the new framwork from `org.unit`
 
 ### Side effects
 * `EqualsMatcher` - tests the implementation of the equals method according to the java specification
@@ -47,6 +48,9 @@ This code is build on top of hamcrest matchers, specifically: **`org.hamcrest.Ty
 * `ToStringEditor` - provides customized toString messages of evaluated objects
 
 ### Releases
-* v1.0 - jdk1.5 and greater
-* v1.1 - jdk1.8 and greater, converted `ToStringEditor` to a functional interface to be used with lambda expression
-* v1.2 - jdk1.8 and greater, introduced `LambdaBuildMatcher` in order to use `TypeSafeBuildMatcher` as lambda expression without having to initialize a new anonymous class
+
+version | java version | description
+---|---|---
+v1.2 | 1.8 and greater | introduced `LambdaBuildMatcher` in order to use `TypeSafeBuildMatcher` as lambda expression without having to initialize a new anonymous class
+v1.1 | 1.8 and greater | converted `ToStringEditor` to a functional interface to be used with lambda expression
+v1.0 | 1.5 and greater | first release containing `TypeSafeBuildMatcher`, `EqualsMatcher`, `HashCodeMatcher`, `LabelMatcher`, and `ToStringEditor`
