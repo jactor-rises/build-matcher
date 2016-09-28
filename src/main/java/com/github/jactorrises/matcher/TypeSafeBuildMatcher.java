@@ -32,5 +32,5 @@ public abstract class TypeSafeBuildMatcher<T> extends TypeSafeMatcher<T> {
         description.appendText(matchBuilder.getExpectedValueMessage());
     }
 
-    public abstract MatchBuilder matches(T typeToTest, MatchBuilder matchBuilder);
+    public abstract MatchBuilder matches(T typeToTest, MatchBuilder matchBuilder) throws Exception;
 }
