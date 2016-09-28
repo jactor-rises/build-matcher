@@ -64,6 +64,7 @@ will affect how this code will evolve.
 
 version | java version | description
 ---|---|---
+v1.2.2 | 1.8 and greater | release v1.2.2: minor, EqualsMatcher and HashCodeMatcher uses a LambdaBuildMatcher
 v1.2.1 | 1.8 and greater | the abstract method `matches` on `TypeSafeBuildMatcher` may throw any `Exception`
 v1.2 | 1.8 and greater | introduced `LambdaBuildMatcher` in order to use `TypeSafeBuildMatcher` as lambda expression without having to initialize a new anonymous class
 v1.1 | 1.8 and greater | converted `ToStringEditor` to a functional interface to be used with lambda expression

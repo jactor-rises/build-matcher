@@ -4,6 +4,7 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
 import static com.github.jactorrises.matcher.LabelMatcher.is;
+import static com.github.jactorrises.matcher.LambdaBuildMatcher.build;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.sameInstance;
@@ -31,22 +32,20 @@ public final class HashCodeMatcher extends BaseMatcher<Object> {
 
     @Override
     public boolean matches(Object item) {
-        return new TypeSafeBuildMatcher<Object>("Implementation of hashCode() according to the java specification") {
-            @Override public MatchBuilder matches(Object typeToTest, MatchBuilder matchBuilder) {
-                int hashCode = item != null ? item.hashCode() : 0;
-                int consecutiveHashCode = item != null ? item.hashCode() : 0;
-                int hashCodeEqual = equalBean != null ? equalBean.hashCode() : 0;
-                int hashCodeUnequal = unequalBean != null ? unequalBean.hashCode() : 0;
+        return build("Implementation of hashCode() according to the java specification", (object, matchBuilder) -> {
+            int hashCode = item != null ? item.hashCode() : 0;
+            int consecutiveHashCode = item != null ? item.hashCode() : 0;
+            int hashCodeEqual = equalBean != null ? equalBean.hashCode() : 0;
+            int hashCodeUnequal = unequalBean != null ? unequalBean.hashCode() : 0;
 
-                return matchBuilder
-                        .matches(hashCode, is(equalTo(consecutiveHashCode), EQUAL_FOR_CONSECUTIVE_CALLS))
-                        .matches(hashCode, is(equalTo(hashCodeEqual), EQUAL_BEANS_UNEQUAL_HASH_CODE))
-                        .matches(hashCode, is(not(equalTo(hashCodeUnequal)), UNEQUAL_OBJECTS_EQUAL_HASH_CODE))
-                        .matches(typeToTest, is(equalTo(equalBean), OBJECTS_MUST_BE_EQUAL))
-                        .matches(typeToTest, is(not(sameInstance(equalBean)), OBJECTS_SHOULD_NOT_BE_THE_SAME_INSTANCE))
-                        .matches(typeToTest, is(not(unequalBean), OBJECTS_CAN_NOT_BE_EQUAL));
-            }
-        }.matches(item);
+            return matchBuilder
+                    .matches(hashCode, is(equalTo(consecutiveHashCode), EQUAL_FOR_CONSECUTIVE_CALLS))
+                    .matches(hashCode, is(equalTo(hashCodeEqual), EQUAL_BEANS_UNEQUAL_HASH_CODE))
+                    .matches(hashCode, is(not(equalTo(hashCodeUnequal)), UNEQUAL_OBJECTS_EQUAL_HASH_CODE))
+                    .matches(object, is(equalTo(equalBean), OBJECTS_MUST_BE_EQUAL))
+                    .matches(object, is(not(sameInstance(equalBean)), OBJECTS_SHOULD_NOT_BE_THE_SAME_INSTANCE))
+                    .matches(object, is(not(unequalBean), OBJECTS_CAN_NOT_BE_EQUAL));
+        }).matches(item);
     }
 
     @Override
