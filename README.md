@@ -48,7 +48,7 @@ failure messages of any failed tests will be thrown.
 
 
 ### Acknowledgements
-This code is build on top of hamcrest matchers, specifically: **`org.hamcrest.TypeSafeMatcher`** and **`org.hamcrest.core.Is`**
+This code is build on top of [hamcrest](https://github.com/hamcrest/JavaHamcrest), specifically: **`org.hamcrest.TypeSafeMatcher`** and **`org.hamcrest.core.Is`**
 
 ### Side effects
 * `EqualsMatcher` - tests the implementation of the equals method according to the java specification
