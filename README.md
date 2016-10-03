@@ -9,11 +9,11 @@ How to do many matches using only one assertThat in a junit-test
 When asserting with `TypeSafeBuildMatcher` or `LambdaBuildMatcher`, you make matches on one single type (one logical concept) and build
 your matches on this type only. This should help you to keep your unit tests small and easy to read/maintain.
 
-One key point with building matches, is usage of `LabelMatcher` to differentiate between matches being done since all failing
-tests will be shown when a failure occurs in a test. Therefore `LabelMatcher.is(<Matcher>, <label>)` must be given when building a match.
+One key point with building matches, is usage of `LabelMatcher` to differentiate between matches being done since all failing tests will
+be shown when a failure occurs in a test. Therefore `LabelMatcher.is(<Matcher>, <label>)` must be given when building a match.
 
-Since there is a possibility that the test code will produce an exception, the exception will be caught and an `AssertionError` containing
-failure messages of any failed tests will be thrown. 
+Since there is a possibility that the test code will produce an exception, the exception will be caught and an `AssertionError`
+containing failure messages of any failed tests will be thrown. 
 
 ### Example of usage
 
@@ -48,7 +48,8 @@ failure messages of any failed tests will be thrown.
 
 
 ### Acknowledgements
-This code is build on top of [hamcrest](https://github.com/hamcrest/JavaHamcrest), specifically: **`org.hamcrest.TypeSafeMatcher`** and **`org.hamcrest.core.Is`**
+This code is build on top of [hamcrest](https://github.com/hamcrest/JavaHamcrest), specifically: **`org.hamcrest.TypeSafeMatcher`** and 
+**`org.hamcrest.core.Is`**
 
 ### Side effects
 * `EqualsMatcher` - tests the implementation of the equals method according to the java specification
@@ -57,8 +58,8 @@ This code is build on top of [hamcrest](https://github.com/hamcrest/JavaHamcrest
 * `ToStringEditor` - provides customized toString messages of evaluated objects
 
 ### Future
-When jdk1.9 is released, a new possibility of doing several asserts in one test will be added. How this implementation is done
-will affect how this code will evolve.
+When jdk1.9 is released, a new possibility of doing several asserts in one test will be added when using `org.junit`. How this
+implementation is done will affect how this code will evolve.
 
 ### Releases
 
