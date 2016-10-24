@@ -22,7 +22,7 @@ containing failure messages of any failed tests will be thrown.
         expectedException.expect(AssertionError.class);
         expectedException.expectMessage(allOf(containsString("Quotes from song"), containsString("every step you take"), containsString("every move you make")));
 
-        assertThat("I'll be watching you", build("Quotes from song", (string, matchBuilder) -> matchBuilder
+        assertThat("I'll be watching you", verify("Quotes from song", (string, matchBuilder) -> matchBuilder
                 .matches(string, is(equalTo("every step you take"), "quote one"))
                 .matches(string, is(equalTo("every move you make"), "quote two"))
         ));
@@ -40,7 +40,7 @@ containing failure messages of any failed tests will be thrown.
                 not(containsString("other.unit.tests.UsageTest")))
         );
 
-        assertThat(new UsageTest(), build("Song titles", (usageTest, matchBuilder) -> matchBuilder
+        assertThat(this, verify("Song titles", (usageTest, matchBuilder) -> matchBuilder
                 .matches(usageTest.song1, is(equalTo("Space Oddity"), "song one"), asString -> usageTest.song1)
                 .matches(usageTest.song2, is(equalTo("Hey You"), "song two"), asString -> usageTest.song2)
         ));
@@ -65,7 +65,8 @@ implementation is done will affect how this code will evolve.
 
 version | java version | description
 ---|---|---
-v1.2.2 | 1.8 and greater | release v1.2.2: minor, EqualsMatcher and HashCodeMatcher uses a LambdaBuildMatcher
+v1.2.3 | 1.8 and greater | release v1.2.3: minor, method LambdaBuildMatcher.build has been deprecated. Use LambdaBuildMatcher.verify
+v1.2.2 | 1.8 and greater | release v1.2.2: minor, EqualsMatcher and HashCodeMatcher uses a LambdaBuildMatcher + bug fix
 v1.2.1 | 1.8 and greater | the abstract method `matches` on `TypeSafeBuildMatcher` may throw any `Exception`
 v1.2 | 1.8 and greater | introduced `LambdaBuildMatcher` in order to use `TypeSafeBuildMatcher` as lambda expression without having to initialize a new anonymous class
 v1.1 | 1.8 and greater | converted `ToStringEditor` to a functional interface to be used with lambda expression

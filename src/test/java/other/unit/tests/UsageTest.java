@@ -9,7 +9,7 @@ import org.junit.rules.ExpectedException;
 
 import static com.github.jactorrises.matcher.HashCodeMatcher.hasImplementedHashCodeAccordingTo;
 import static com.github.jactorrises.matcher.LabelMatcher.is;
-import static com.github.jactorrises.matcher.LambdaBuildMatcher.build;
+import static com.github.jactorrises.matcher.LambdaBuildMatcher.verify;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.allOf;
@@ -111,7 +111,7 @@ public class UsageTest {
         expectedException.expect(AssertionError.class);
         expectedException.expectMessage(allOf(containsString("Quotes from song"), containsString("every step you take"), containsString("every move you make")));
 
-        assertThat("I'll be watching you", build("Quotes from song", (string, matchBuilder) -> matchBuilder
+        assertThat("I'll be watching you", verify("Quotes from song", (string, matchBuilder) -> matchBuilder
                 .matches(string, is(containsString("every step you take"), "quote one"))
                 .matches(string, is(containsString("every move you make"), "quote two"))
         ));
@@ -129,7 +129,7 @@ public class UsageTest {
                 not(containsString("other.unit.tests.UsageTest")))
         );
 
-        assertThat(new UsageTest(), build("Song titles", (usageTest, matchBuilder) -> matchBuilder
+        assertThat(this, verify("Song titles", (usageTest, matchBuilder) -> matchBuilder
                 .matches(usageTest.song1, is(equalTo("Space Oddity"), "song one"), asString -> usageTest.song1)
                 .matches(usageTest.song2, is(equalTo("Hey You"), "song two"), asString -> usageTest.song2)
         ));
