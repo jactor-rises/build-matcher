@@ -112,8 +112,8 @@ public class UsageTest {
         expectedException.expectMessage(allOf(containsString("Quotes from song"), containsString("every step you take"), containsString("every move you make")));
 
         assertThat("I'll be watching you", verify("Quotes from song", (string, matchBuilder) -> matchBuilder
-                .matches(string, is(containsString("every step you take"), "quote one"))
-                .matches(string, is(containsString("every move you make"), "quote two"))
+                .matches(string, containsString("every step you take"), "quote one")
+                .matches(string, containsString("every move you make"), "quote two")
         ));
     }
 
@@ -132,6 +132,21 @@ public class UsageTest {
         assertThat(this, verify("Song titles", (usageTest, matchBuilder) -> matchBuilder
                 .matches(usageTest.song1, is(equalTo("Space Oddity"), "song one"), asString -> usageTest.song1)
                 .matches(usageTest.song2, is(equalTo("Hey You"), "song two"), asString -> usageTest.song2)
+        ));
+    }
+
+    @Test
+    public void shouldUseLambdaExpressionWithBuildMatcherAndCustomizedToStringWithoutLabeledMatcher() {
+        expectedException.expect(AssertionError.class);
+        expectedException.expectMessage(allOf(
+                containsString("song one is \"Space Oddity\" | real: \"Human Behaviour\""),
+                containsString("song two is \"Hey You\" | real: \"Possibly Maybe\""),
+                not(containsString("other.unit.tests.UsageTest")))
+        );
+
+        assertThat(this, verify("Song titles", (usageTest, matchBuilder) -> matchBuilder
+                .matches(usageTest.song1, equalTo("Space Oddity"), "song one", asString -> usageTest.song1)
+                .matches(usageTest.song2, equalTo("Hey You"), "song two", asString -> usageTest.song2)
         ));
     }
 }

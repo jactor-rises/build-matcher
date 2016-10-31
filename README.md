@@ -46,6 +46,20 @@ containing failure messages of any failed tests will be thrown.
         ));
     }
 
+    @Test
+    public void shouldUseLambdaExpressionWithBuildMatcherAndCustomizedToStringWithoutLabeledMatcher() {
+        expectedException.expect(AssertionError.class);
+        expectedException.expectMessage(allOf(
+                containsString("song one is \"Space Oddity\" | real: \"Human Behaviour\""),
+                containsString("song two is \"Hey You\" | real: \"Possibly Maybe\""),
+                not(containsString("other.unit.tests.UsageTest")))
+        );
+
+        assertThat(this, verify("Song titles", (usageTest, matchBuilder) -> matchBuilder
+                .matches(usageTest.song1, equalTo("Space Oddity"), "song one", asString -> usageTest.song1)
+                .matches(usageTest.song2, equalTo("Hey You"), "song two", asString -> usageTest.song2)
+        ));
+    }
 
 ### Acknowledgements
 This code is build on top of [hamcrest](https://github.com/hamcrest/JavaHamcrest), specifically: **`org.hamcrest.TypeSafeMatcher`** and 
@@ -65,6 +79,7 @@ implementation is done will affect how this code will evolve.
 
 version | java version | description
 ---|---|---
+v1.2.4 | 1.8 and greater | release v1.2.4: minor, method LambdaBuildMatcher.verify can also be used without LabelMatcher as long as "label" (String) is provided and removed dependency of apache.lang...
 v1.2.3 | 1.8 and greater | release v1.2.3: minor, method LambdaBuildMatcher.build has been deprecated. Use LambdaBuildMatcher.verify
 v1.2.2 | 1.8 and greater | release v1.2.2: minor, EqualsMatcher and HashCodeMatcher uses a LambdaBuildMatcher + bug fix
 v1.2.1 | 1.8 and greater | the abstract method `matches` on `TypeSafeBuildMatcher` may throw any `Exception`

@@ -1,6 +1,5 @@
 package com.github.jactorrises.matcher;
 
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.StringDescription;
@@ -26,7 +25,7 @@ public class LabelMatcher<T> extends Is<T> {
     }
 
     @Override public int hashCode() {
-        return new HashCodeBuilder().append(label).toHashCode();
+        return label.hashCode();
     }
 
     @Override public String toString() {
