@@ -6,6 +6,7 @@ package com.github.jactorrises.matcher;
  *
  * @param <T> is the type to test
  */
+@FunctionalInterface
 public interface BuildMatcher<T> {
     MatchBuilder matches(T typeToTest, MatchBuilder matchBuilder);
 }
