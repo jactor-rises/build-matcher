@@ -24,17 +24,6 @@ public class LambdaBuildMatcher<T> extends TypeSafeBuildMatcher<T> {
      * @param buildMatcher is used to build matches of the type to match
      * @param expects states the expected behaviour
      * @return new {@link LambdaBuildMatcher} using {@link BuildMatcher}
-     * @deprecated since v1.2.3. Use {@link LambdaBuildMatcher#verify(String, BuildMatcher)}
-     */
-    @Deprecated()
-    public static <T> Matcher<T> build(String expects, BuildMatcher<T> buildMatcher) {
-        return new LambdaBuildMatcher<>(expects, buildMatcher);
-    }
-
-    /**
-     * @param buildMatcher is used to build matches of the type to match
-     * @param expects states the expected behaviour
-     * @return new {@link LambdaBuildMatcher} using {@link BuildMatcher}
      */
     public static <T> Matcher<T> verify(String expects, BuildMatcher<T> buildMatcher) {
         return new LambdaBuildMatcher<>(expects, buildMatcher);
