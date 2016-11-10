@@ -4,7 +4,7 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
 import static com.github.jactorrises.matcher.LabelMatcher.is;
-import static com.github.jactorrises.matcher.LambdaBuildMatcher.build;
+import static com.github.jactorrises.matcher.LambdaBuildMatcher.verify;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.sameInstance;
@@ -30,9 +30,8 @@ public final class HashCodeMatcher extends BaseMatcher<Object> {
         return new HashCodeMatcher(equalBean, unequalBean);
     }
 
-    @Override
-    public boolean matches(Object item) {
-        return build("Implementation of hashCode() according to the java specification", (object, matchBuilder) -> {
+    @Override public boolean matches(Object item) {
+        return verify("Implementation of hashCode() according to the java specification", (object, matchBuilder) -> {
             int hashCode = item != null ? item.hashCode() : 0;
             int consecutiveHashCode = item != null ? item.hashCode() : 0;
             int hashCodeEqual = equalBean != null ? equalBean.hashCode() : 0;
@@ -48,6 +47,5 @@ public final class HashCodeMatcher extends BaseMatcher<Object> {
         }).matches(item);
     }
 
-    @Override
-    public void describeTo(Description description) { }
+    @Override public void describeTo(Description description) { }
 }

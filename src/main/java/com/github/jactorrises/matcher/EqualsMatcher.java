@@ -1,20 +1,20 @@
 package com.github.jactorrises.matcher;
 
-import static com.github.jactorrises.matcher.LabelMatcher.is;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
 
-import static com.github.jactorrises.matcher.LambdaBuildMatcher.build;
+import static com.github.jactorrises.matcher.LabelMatcher.is;
+import static com.github.jactorrises.matcher.LambdaBuildMatcher.verify;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.sameInstance;
 
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-
 /**
  * The {@link EqualsMatcher} will do a thorough testing av an objects equals method according to the java specifications.
  */
 public final class EqualsMatcher extends BaseMatcher<Object> {
+
     private static final OtherType OTHER_TYPE = new OtherType();
     private static final String ALWAYS_TRUE = "This should always be true; same instances are equal and different types are not equal";
     private static final String UNEQUAL_BEAN_EQUAL_TO_BASE_BEAN = "Unequal bean equal to base bean?";
@@ -32,7 +32,7 @@ public final class EqualsMatcher extends BaseMatcher<Object> {
 
     @Override
     public boolean matches(Object item) {
-        return build("Matching of equals method according to java specifications", (object, matchBuilder) -> matchBuilder
+        return verify("Matching of equals method according to java specifications", (object, matchBuilder) -> matchBuilder
                 .matches(object, is(allOf(equalTo(object), not(equalTo(OTHER_TYPE))), ALWAYS_TRUE))
                 .matches(object, is(equalTo(shouldBeEqual), IS_EQUAL_WITH_HINT + "/object.equals(shouldBeEqual)"))
                 .matches(shouldBeEqual, is(equalTo(object), IS_EQUAL_WITH_HINT + "/shouldBeEqual.equals(object)"))
@@ -42,11 +42,14 @@ public final class EqualsMatcher extends BaseMatcher<Object> {
     }
 
     @Override
-    public void describeTo(Description description) { }
+    public void describeTo(Description description) {
+    }
 
     public static EqualsMatcher hasImplenetedEqualsMethodUsing(Object equalBean, Object unequalBean) {
         return new EqualsMatcher(equalBean, unequalBean);
     }
 
-    private static class OtherType {}
+    private static class OtherType {
+
+    }
 }
