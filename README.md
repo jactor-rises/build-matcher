@@ -84,11 +84,12 @@ implementation is done will affect how this code will evolve.
 
 version | java version | description
 ---|---|---
-v2.0 | 1.8 and greater | release v2.0: the project has an apache v 2.0 license to satisfy open source projects deployed on maven central 
-v1.2.4 | 1.8 and greater | release v1.2.4: minor, method LambdaBuildMatcher.verify can also be used without LabelMatcher as long as "label" (String) is provided and removed dependency of apache.lang...
-v1.2.3 | 1.8 and greater | release v1.2.3: minor, method LambdaBuildMatcher.build has been deprecated. Use LambdaBuildMatcher.verify
-v1.2.2 | 1.8 and greater | release v1.2.2: minor, EqualsMatcher and HashCodeMatcher uses a LambdaBuildMatcher + bug fix
-v1.2.1 | 1.8 and greater | the abstract method `matches` on `TypeSafeBuildMatcher` may throw any `Exception`
-v1.2 | 1.8 and greater | introduced `LambdaBuildMatcher` in order to use `TypeSafeBuildMatcher` as lambda expression without having to initialize a new anonymous class
-v1.1 | 1.8 and greater | converted `ToStringEditor` to a functional interface to be used with lambda expression
+v2.0.1 | 1.8 | release v2.0.1 minor. removed use of deprecated coded
+v2.0 | 1.8 | release v2.0: the project has an apache v 2.0 license to satisfy open source projects deployed on maven central 
+v1.2.4 | 1.8 | release v1.2.4: minor, method LambdaBuildMatcher.verify can also be used without LabelMatcher as long as "label" (String) is provided and removed dependency of apache.lang...
+v1.2.3 | 1.8 | release v1.2.3: minor, method LambdaBuildMatcher.build has been deprecated. Use LambdaBuildMatcher.verify
+v1.2.2 | 1.8 | release v1.2.2: minor, EqualsMatcher and HashCodeMatcher uses a LambdaBuildMatcher + bug fix
+v1.2.1 | 1.8 | the abstract method `matches` on `TypeSafeBuildMatcher` may throw any `Exception`
+v1.2 | 1.8 | introduced `LambdaBuildMatcher` in order to use `TypeSafeBuildMatcher` as lambda expression without having to initialize a new anonymous class
+v1.1 | 1.8 | converted `ToStringEditor` to a functional interface to be used with lambda expression
 v1.0 | 1.5 and greater | first release containing `TypeSafeBuildMatcher`, `EqualsMatcher`, `HashCodeMatcher`, `LabelMatcher`, and `ToStringEditor`
