@@ -86,7 +86,16 @@ public final class MatchBuilder {
         mismatchDescriptions.appendExceptionToFailureMessageUsing(exception);
     }
 
+    /**
+     * @param dynamicExpectation is appended to the static expectation
+     * @return a {@link MatchBuilder} with any older matches
+     */
+    public MatchBuilder append(Object dynamicExpectation) {
+        mismatchDescriptions.append(dynamicExpectation);
+        return this;
+    }
+
     String getExpectedValueMessage() {
-        return mismatchDescriptions.getExpectedDescritpion();
+        return mismatchDescriptions.getExpectedDescription();
     }
 }

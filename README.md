@@ -37,7 +37,7 @@ containing failure messages of any failed tests will be thrown.
         expectedException.expectMessage(allOf(
                 containsString("song one is \"Space Oddity\" | real: \"Human Behaviour\""),
                 containsString("song two is \"Hey You\" | real: \"Possibly Maybe\""),
-                not(containsString("other.unit.tests.UsageTest")))
+                not(containsString(this.getClass().getSimpleName())))
         );
 
         assertThat(this, verify("Song titles", (usageTest, matchBuilder) -> matchBuilder

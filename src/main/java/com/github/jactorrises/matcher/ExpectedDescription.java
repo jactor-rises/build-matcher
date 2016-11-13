@@ -13,6 +13,10 @@ class ExpectedDescription {
                 .append('"');
     }
 
+    void append(Object dynamicExpectation) {
+        expectedDescription.insert(expectedDescription.lastIndexOf("\""), dynamicExpectation);
+    }
+
     StringBuilder get() {
         return expectedDescription;
     }

@@ -84,7 +84,11 @@ class MismatchDescriptions {
         return expectedDescription.get().append(allMismatchDescriptions.toString()).toString();
     }
 
-    String getExpectedDescritpion() {
+    void append(Object dynamicExpectation) {
+        expectedDescription.append(dynamicExpectation);
+    }
+
+    String getExpectedDescription() {
         return expectedDescription.get().toString();
     }
 }
