@@ -9,6 +9,7 @@ import java.util.List;
 class Matches {
     private final List<Match<?>> matches = new ArrayList<>();
     private boolean mismatch;
+    private int numberOfMatc = 0;
 
     boolean isMismatch() {
         return mismatch;
@@ -23,7 +24,7 @@ class Matches {
      * @return match evaluated: {@link Match#isMatch()}
      */
     boolean append(Match<?> aMatch) {
-        matches.add(aMatch);
+        matches.add(aMatch.identify(++numberOfMatc));
 
         if (!mismatch) {
             mismatch = !aMatch.isMatch();

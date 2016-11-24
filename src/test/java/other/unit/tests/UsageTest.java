@@ -97,7 +97,7 @@ public class UsageTest {
     @Test
     public void shouldCreateCustomToStringMessageApplicableToVerification() {
         expectedException.expect(AssertionError.class);
-        expectedException.expectMessage(allOf(containsString("- customize is \"something else\""), not(containsString("some.horrible.MemoryReference@123456789"))));
+        expectedException.expectMessage(allOf(containsString("1) customize is \"something else\""), not(containsString("some.horrible.MemoryReference@123456789"))));
 
         assertThat("some.horrible.MemoryReference@123456789", new TypeSafeBuildMatcher<String>("custom toString") {
             @Override
@@ -116,6 +116,19 @@ public class UsageTest {
         assertThat("I'll be watching you", verify("Quotes from song", (string, matchBuilder) -> matchBuilder
                 .matches(string, containsString("every step you take"), "quote one")
                 .matches(string, containsString("every move you make"), "quote two")
+        ));
+    }
+
+    @Test
+    public void shouldHaveNumberedFailureMessages() {
+        expectedException.expect(AssertionError.class);
+        expectedException.expectMessage(allOf(containsString("1) one is a string"), containsString("2) two is a string"), containsString("4) four is a string")));
+
+        assertThat("some string to verify", verify("failure messages with match numbers", (string, matchBuilder) -> matchBuilder
+                .matches(string, containsString("match one"), "one")
+                .matches(string, containsString("match two"), "two")
+                .matches(string, containsString("string to verify"), "three")
+                .matches(string, containsString("match four"), "four")
         ));
     }
 

@@ -72,7 +72,7 @@ public class MatchBuilderTest {
     @Test
     public void shouldFailWithExpectedMessageWhenVerifyingWithMockitoAndArgumentIsNotExpected() {
         expectedException.expect(AssertionError.class);
-        expectedException.expectMessage("- b is <2> | real: <1>");
+        expectedException.expectMessage("2) b is <2> | real: <1>");
 
         Argument argument = new Argument();
         argument.a = 1;

@@ -92,7 +92,7 @@ public class TypeSafeBuildMatcherTest {
     @Test
     public void shouldNotHaveExpectedMessageTwiceWhenFailure() {
         expectedException.expect(AssertionError.class);
-        expectedException.expectMessage("- fail safe is \"happy case\" | real: \"failed case\"");
+        expectedException.expectMessage("1) fail safe is \"happy case\" | real: \"failed case\"");
 
         assertThat("failed case", new TypeSafeBuildMatcher<String>("failure messages without repetition") {
             @Override

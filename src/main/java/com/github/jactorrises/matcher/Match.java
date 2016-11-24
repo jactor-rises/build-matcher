@@ -18,12 +18,23 @@ class Match<T> extends LabelMatcher<T> {
         toString = matcher.toString();
     }
 
+    private int matchNumber;
+
     boolean isMatch() {
         return matches(match);
     }
 
     Optional<Class<?>> fetchRealClass() {
         return match != null ? Optional.of(match.getClass()) : Optional.empty();
+    }
+
+    String fetchMatchPrefix() {
+        return (matchNumber < 10 ? " " + matchNumber : String.valueOf(matchNumber)) + ") ";
+    }
+
+    Match<?> identify(int matchNumber) {
+        this.matchNumber = matchNumber;
+        return this;
     }
 
     Object get() {

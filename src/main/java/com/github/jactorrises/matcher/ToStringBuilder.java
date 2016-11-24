@@ -25,7 +25,7 @@ class ToStringBuilder<T> {
     }
 
     private String provideExpectedVsRealValue() {
-        return " - " + provideQuotesAndNumberClass(expectedMatch) + " | real: " + provideQuotesAndNumberClass(expectedMatch.get());
+        return expectedMatch.fetchMatchPrefix() + provideQuotesAndNumberClass(expectedMatch) + " | real: " + provideQuotesAndNumberClass(expectedMatch.get());
     }
 
     private String provideQuotesAndNumberClass(Object object) {
