@@ -2,9 +2,12 @@ package com.github.jactorrises.matcher;
 
 import org.hamcrest.Matcher;
 
+import java.util.Arrays;
 import java.util.Optional;
 
-/** A builder of strings regarding expected vs. real values... */
+/**
+ * A builder of strings regarding expected vs. real values...
+ */
 class ToStringBuilder<T> {
     private final Match<T> expectedMatch;
     private final MatchBuilder matchBuilder;
@@ -25,10 +28,11 @@ class ToStringBuilder<T> {
     }
 
     private String provideExpectedVsRealValue() {
-        return expectedMatch.fetchMatchPrefix() + provideQuotesAndNumberClass(expectedMatch) + " | real: " + provideQuotesAndNumberClass(expectedMatch.get());
+        return expectedMatch.fetchMatchPrefix() + provideQuotesOrNumberClass(expectedMatch) + " | real: " + provideQuotesOrNumberClass(expectedMatch.get()) + " | " + fetchStacktraceElementOfMatchFailure();
     }
 
-    private String provideQuotesAndNumberClass(Object object) {
+
+    private String provideQuotesOrNumberClass(Object object) {
         if (object == null) {
             return null;
         }
@@ -59,6 +63,21 @@ class ToStringBuilder<T> {
         }
 
         return numberAndType.toString();
+    }
+
+    private String fetchStacktraceElementOfMatchFailure() {
+        Optional<StackTraceElement> stack = fetchFrom(Thread.currentThread().getStackTrace());
+        return stack.isPresent() ? stack.get().toString() : "unknown source";
+    }
+
+    private Optional<StackTraceElement> fetchFrom(StackTraceElement[] stackTrace) {
+        return Arrays.stream(stackTrace)
+                .filter(stackTraceElement -> !stackTraceElement.toString().contains("java.lang"))
+                .filter(stackTraceElement -> !stackTraceElement.toString().contains("org.hamcrest"))
+                .filter(stackTraceElement -> !stackTraceElement.toString().contains("org.junit"))
+                .filter(stackTraceElement -> !stackTraceElement.toString().contains("junit.framework"))
+                .filter(stackTraceElement -> !stackTraceElement.toString().contains(ToStringEditor.class.getPackage().getName()))
+                .findFirst();
     }
 
     private StringBuilder surround(Number number) {

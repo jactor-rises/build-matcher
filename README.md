@@ -61,6 +61,21 @@ containing failure messages of any failed tests will be thrown.
         ));
     }
 
+    @Test
+    public void shouldDisplayStackTraceElementForEachMatch() {
+        expectedException.expect(AssertionError.class);
+        expectedException.expectMessage(allOf(
+                containsString("UsageTest.java:183"),
+                containsString("UsageTest.java:184")
+        ));
+
+        assertThat(this, verify("Showing stack trace element", (test, buildMatcher) -> buildMatcher
+                .matches(test, nullValue(), "test failure one")
+                .matches(test, nullValue(), "test failure two")
+                .matches(test, notNullValue(), "match will not fail")
+        ));
+    }
+
 ### Acknowledgements
 This code is build on top of [hamcrest](https://github.com/hamcrest/JavaHamcrest), specifically: **`org.hamcrest.TypeSafeMatcher`** and **`org.hamcrest.core.Is`**
 
@@ -83,12 +98,13 @@ implementation is done will affect how this code will evolve.
 
 version | java version | description
 ---|---|---
-v2.1.0 | 1.8 | release v2.1.0: matching with the MatchBuilder contains a match numbering
-v2.0.1 | 1.8 | release v2.0.1 minor. removed use of deprecated code
-v2.0 | 1.8 | release v2.0: the project has an apache v 2.0 license to satisfy open source projects deployed on maven central 
-v1.2.4 | 1.8 | release v1.2.4: minor, method LambdaBuildMatcher.verify can also be used without LabelMatcher as long as "label" (String) is provided and removed dependency of apache.lang...
-v1.2.3 | 1.8 | release v1.2.3: minor, method LambdaBuildMatcher.build has been deprecated. Use LambdaBuildMatcher.verify
-v1.2.2 | 1.8 | release v1.2.2: minor, EqualsMatcher and HashCodeMatcher uses a LambdaBuildMatcher + bug fix
+v2.2 | 1.8 | stack trace element of match failure is displayed in error message
+v2.1.0 | 1.8 | matching with the MatchBuilder contains a match numbering
+v2.0.1 | 1.8 | removed use of deprecated code
+v2.0 | 1.8 | the project has an apache v 2.0 license to satisfy open source projects deployed on maven central 
+v1.2.4 | 1.8 | method LambdaBuildMatcher.verify can also be used without LabelMatcher as long as "label" (String) is provided and removed dependency of apache.lang...
+v1.2.3 | 1.8 | method LambdaBuildMatcher.build has been deprecated. Use LambdaBuildMatcher.verify
+v1.2.2 | 1.8 | EqualsMatcher and HashCodeMatcher uses a LambdaBuildMatcher + bug fix
 v1.2.1 | 1.8 | the abstract method `matches` on `TypeSafeBuildMatcher` may throw any `Exception`
 v1.2 | 1.8 | introduced `LambdaBuildMatcher` in order to use `TypeSafeBuildMatcher` as lambda expression without having to initialize a new anonymous class
 v1.1 | 1.8 | converted `ToStringEditor` to a functional interface to be used with lambda expression
