@@ -90,13 +90,9 @@ This code is build on top of [hamcrest](https://github.com/hamcrest/JavaHamcrest
 * `LabelMatcher` - extends `org.hamcrest.core.Is` and provides labeling of standard `org.hamcrest.Matcher` failure messages.
 * `ToStringEditor` - provides customized toString messages of evaluated objects
 
-### Future
-When jdk1.9 is released, a new possibility of doing several asserts in one test will be added when using `org.junit`. How this
-implementation is done will affect how this code will evolve.
-
 ### No longer supported
 
-As of junit 5, the main purpose of this project is not needed anymore as this is solved in junit 5.
+As of junit 5, the main purpose of this project is not needed anymore:
 
 
     @Test
